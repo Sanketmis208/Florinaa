@@ -323,22 +323,23 @@ const AdminDashboard = () => {
       <aside className="w-64 bg-primary text-secondary/70 flex flex-col border-r border-[rgba(200,169,126,0.15)] shrink-0 hidden md:flex">
         <div className="p-6 border-b border-secondary/10 flex items-center gap-3">
           <img src="/FLORINAA_Logo_Transparent.png" alt="" className="h-8 w-auto brightness-0 invert" />
-          <span className="font-serif text-sm tracking-wider font-semibold text-white">Florinaa Admin</span>
+          <span className="font-serif text-xs uppercase tracking-widest font-semibold text-white">Florinaa Control</span>
         </div>
-        <nav className="flex-grow p-4 space-y-1">
+        <nav className="flex-grow p-4 space-y-1.5">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
+            const isActive = activeTab === link.id;
             return (
               <button
                 key={link.id}
                 onClick={() => setActiveTab(link.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                  activeTab === link.id
-                    ? "bg-accent text-primary"
-                    : "hover:bg-white/5 hover:text-white"
+                className={`w-full flex items-center gap-3.5 px-4.5 py-3.5 rounded-xl text-xs uppercase tracking-widest font-semibold transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? "bg-accent text-primary shadow-[0_4px_20px_rgba(200,169,126,0.25)] scale-[1.02]"
+                    : "text-secondary/60 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <Icon size={18} />
+                <Icon size={16} className={isActive ? "text-primary" : "text-accent/60"} />
                 {link.label}
               </button>
             );
@@ -347,9 +348,9 @@ const AdminDashboard = () => {
         <div className="p-4 border-t border-secondary/10">
           <button
             onClick={() => logoutMutation.mutate()}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-400 hover:bg-red-950/20 hover:text-red-300 transition-colors cursor-pointer"
+            className="w-full flex items-center gap-3.5 px-4.5 py-3.5 rounded-xl text-xs uppercase tracking-widest font-semibold text-red-400 hover:bg-red-950/20 hover:text-red-300 transition-all cursor-pointer"
           >
-            <LogOut size={18} />
+            <LogOut size={16} />
             Logout
           </button>
         </div>
@@ -358,11 +359,11 @@ const AdminDashboard = () => {
       {/* Main Panel Content */}
       <main className="flex-grow p-6 md:p-10 overflow-y-auto">
         {/* Mobile Navigation Header */}
-        <div className="flex md:hidden bg-white p-4 rounded-xl shadow border border-accent/10 mb-6 items-center justify-between">
+        <div className="flex md:hidden bg-white p-4.5 rounded-2xl shadow-sm border border-accent/10 mb-6 items-center justify-between">
           <select
             value={activeTab}
             onChange={(e) => setActiveTab(e.target.value)}
-            className="px-3 py-2 rounded border border-neutral-300 font-medium text-sm focus:outline-none"
+            className="px-3 py-2 rounded-xl border border-neutral-200 font-serif text-sm focus:outline-none bg-secondary/50 cursor-pointer"
           >
             {sidebarLinks.map(l => (
               <option key={l.id} value={l.id}>{l.label}</option>
@@ -370,7 +371,7 @@ const AdminDashboard = () => {
           </select>
           <button
             onClick={() => logoutMutation.mutate()}
-            className="text-red-600 font-semibold text-xs flex items-center gap-1"
+            className="text-red-500 hover:text-red-600 font-semibold text-xs tracking-wider uppercase flex items-center gap-1.5"
           >
             <LogOut size={14} /> Logout
           </button>
@@ -379,39 +380,36 @@ const AdminDashboard = () => {
         {/* 1. OVERVIEW TAB */}
         {activeTab === "overview" && (
           <div className="space-y-8 text-left">
-            <h2 className="heading-luxury text-3xl font-medium text-primary">Overview Dashboard</h2>
+            <div>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">Overview Dashboard</h2>
+              <p className="text-neutral-400 text-xs mt-1">Real-time statistics and latest wholesale activity.</p>
+            </div>
             
             {/* Stats Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-accent/10 flex flex-col gap-2">
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Total Products</span>
-                <span className="text-3xl font-serif font-bold text-primary">{products?.length || 0}</span>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-accent/10 flex flex-col gap-2">
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Categories</span>
-                <span className="text-3xl font-serif font-bold text-primary">{categories?.length || 0}</span>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-accent/10 flex flex-col gap-2">
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Inquiry Leads</span>
-                <span className="text-3xl font-serif font-bold text-primary">
-                  {leads?.filter(l => l.type === "inquiry").length || 0}
-                </span>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-md border border-accent/10 flex flex-col gap-2">
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Catalog Downloads</span>
-                <span className="text-3xl font-serif font-bold text-primary">
-                  {leads?.filter(l => l.type === "catalogue-download").length || 0}
-                </span>
-              </div>
+              {[
+                { label: "Total Products", value: products?.length || 0 },
+                { label: "Categories", value: categories?.length || 0 },
+                { label: "Inquiry Leads", value: leads?.filter(l => l.type === "inquiry").length || 0 },
+                { label: "Catalog Downloads", value: leads?.filter(l => l.type === "catalogue-download").length || 0 },
+              ].map((stat, idx) => (
+                <div key={idx} className="bg-white p-6 rounded-2xl border border-accent/15 hover:border-accent/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(200,169,126,0.08)] transition-all duration-300 flex flex-col gap-2 group hover:-translate-y-0.5">
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest group-hover:text-accent transition-colors">{stat.label}</span>
+                  <span className="text-3xl font-serif font-bold text-primary">{stat.value}</span>
+                </div>
+              ))}
             </div>
 
             {/* Recent Leads Preview */}
-            <div className="bg-white rounded-2xl shadow-md border border-accent/10 p-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-accent/10 p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-serif text-lg font-medium text-primary">Recent Wholesale Leads</h3>
+                <div>
+                  <h3 className="font-serif text-lg font-medium text-primary">Recent Wholesale Leads</h3>
+                  <p className="text-neutral-400 text-xs mt-0.5">The latest inquiries generated from your public website forms.</p>
+                </div>
                 <button
                   onClick={() => setActiveTab("leads")}
-                  className="text-xs text-accent font-semibold hover:text-accent-dark uppercase tracking-widest"
+                  className="text-xs text-accent font-semibold hover:text-accent-dark uppercase tracking-widest flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   View All Hub →
                 </button>
@@ -419,33 +417,36 @@ const AdminDashboard = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-neutral-600 text-left">
                   <thead>
-                    <tr className="border-b border-neutral-100 pb-3 text-xs uppercase text-neutral-400 font-bold">
-                      <th className="py-3 px-4">Contact</th>
-                      <th className="py-3 px-4">Company</th>
-                      <th className="py-3 px-4">Lead Type</th>
-                      <th className="py-3 px-4">Phone / Email</th>
-                      <th className="py-3 px-4 text-center">Status</th>
+                    <tr className="border-b border-neutral-100 text-[10px] uppercase text-neutral-400 font-bold tracking-wider">
+                      <th className="py-4 px-6 bg-neutral-50/50 rounded-l-xl">Contact</th>
+                      <th className="py-4 px-6 bg-neutral-50/50">Company</th>
+                      <th className="py-4 px-6 bg-neutral-50/50">Lead Type</th>
+                      <th className="py-4 px-6 bg-neutral-50/50">Phone / Email</th>
+                      <th className="py-4 px-6 bg-neutral-50/50 text-center rounded-r-xl">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {leads?.slice(0, 5).map((lead) => (
-                      <tr key={lead._id} className="border-b border-neutral-50/50 hover:bg-secondary/20">
-                        <td className="py-4 px-4 font-semibold text-primary">{lead.name}</td>
-                        <td className="py-4 px-4">{lead.companyName || "Personal"}</td>
-                        <td className="py-4 px-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${
-                            lead.type === "catalogue-download" ? "bg-accent/10 text-accent-dark" : "bg-blue-50 text-blue-600"
+                      <tr key={lead._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
+                        <td className="py-4 px-6 font-semibold text-primary">{lead.name}</td>
+                        <td className="py-4 px-6">{lead.companyName || "Personal"}</td>
+                        <td className="py-4 px-6">
+                          <span className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
+                            lead.type === "catalogue-download" ? "bg-accent/15 text-accent-dark" : "bg-blue-50 text-blue-600"
                           }`}>
-                            {lead.type}
+                            {lead.type === "catalogue-download" ? "Catalogue" : "Quote Request"}
                           </span>
                         </td>
-                        <td className="py-4 px-4 text-xs">
-                          <div>{lead.phone}</div>
-                          <div className="text-neutral-400">{lead.email}</div>
+                        <td className="py-4 px-6 text-xs">
+                          <div className="font-medium">{lead.phone}</div>
+                          <div className="text-neutral-400 mt-0.5">{lead.email}</div>
                         </td>
-                        <td className="py-4 px-4 text-center">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase font-bold ${
-                            lead.status === "new" ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"
+                        <td className="py-4 px-6 text-center">
+                          <span className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
+                            lead.status === "new" ? "bg-red-50 text-red-600 border border-red-100" :
+                            lead.status === "contacted" ? "bg-amber-50 text-amber-600 border border-amber-100" :
+                            lead.status === "responded" ? "bg-blue-50 text-blue-600 border border-blue-100" :
+                            "bg-emerald-50 text-emerald-600 border border-emerald-100"
                           }`}>
                             {lead.status}
                           </span>
@@ -454,7 +455,7 @@ const AdminDashboard = () => {
                     ))}
                     {(!leads || leads.length === 0) && (
                       <tr>
-                        <td colSpan={5} className="text-center py-6 text-neutral-400 italic">No wholesale leads found.</td>
+                        <td colSpan={5} className="text-center py-8 text-neutral-400 italic">No wholesale leads found.</td>
                       </tr>
                     )}
                   </tbody>
@@ -468,21 +469,24 @@ const AdminDashboard = () => {
         {activeTab === "products" && (
           <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Products</h2>
+              <div>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Products</h2>
+                <p className="text-neutral-400 text-xs mt-1">Create, update, or temporarily hide wholesale product listings.</p>
+              </div>
               <button
                 onClick={handleOpenProductAdd}
-                className="flex items-center gap-2 px-5 py-3 rounded-full bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider shadow cursor-pointer"
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider shadow-[0_4px_14px_rgba(17,17,17,0.15)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.25)] transition-all cursor-pointer"
               >
                 <Plus size={16} /> Add Product
               </button>
             </div>
 
             {/* Products Table */}
-            <div className="bg-white rounded-2xl shadow-md border border-accent/10 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-accent/10 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-neutral-600 text-left">
-                  <thead className="bg-neutral-50">
-                    <tr className="border-b border-neutral-100 text-xs uppercase text-neutral-400 font-bold">
+                  <thead className="bg-neutral-50/50">
+                    <tr className="border-b border-neutral-100 text-[10px] uppercase text-neutral-400 font-bold tracking-wider">
                       <th className="py-4 px-6">Image</th>
                       <th className="py-4 px-6">Name</th>
                       <th className="py-4 px-6">Category</th>
@@ -495,40 +499,40 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {products?.map((product) => (
-                      <tr key={product._id} className="border-b border-neutral-50 hover:bg-secondary/10">
+                      <tr key={product._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
                         <td className="py-3 px-6">
                           <img
                             src={product.images?.[0] || "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=100&q=85"}
                             alt=""
-                            className="w-12 h-12 rounded-lg object-cover border border-neutral-200"
+                            className="w-12 h-12 rounded-xl object-cover border border-neutral-200 shadow-sm"
                           />
                         </td>
                         <td className="py-3 px-6 font-semibold text-primary">{product.name}</td>
-                        <td className="py-3 px-6">{product.category?.name}</td>
-                        <td className="py-3 px-6">{product.gsm}</td>
-                        <td className="py-3 px-6 max-w-[150px] truncate" title={product.dimensions}>{product.dimensions}</td>
+                        <td className="py-3 px-6 text-neutral-500 font-medium">{product.category?.name || "Unassigned"}</td>
+                        <td className="py-3 px-6 font-mono text-xs">{product.gsm}</td>
+                        <td className="py-3 px-6 max-w-[150px] truncate text-xs" title={product.dimensions}>{product.dimensions}</td>
                         <td className="py-3 px-6 text-center">
                           {product.featured ? (
-                            <span className="inline-block px-2 py-0.5 rounded bg-accent/10 text-accent-dark text-[10px] font-bold uppercase">Yes</span>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-dark text-[9px] font-bold uppercase tracking-wider">Yes</span>
                           ) : (
-                            <span className="inline-block px-2 py-0.5 rounded bg-neutral-100 text-neutral-400 text-[10px] font-bold uppercase">No</span>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-neutral-100 text-neutral-400 text-[9px] font-bold uppercase tracking-wider">No</span>
                           )}
                         </td>
                         <td className="py-3 px-6 text-center">
                           {product.visible ? (
-                            <Eye className="mx-auto text-emerald-600" size={18} />
+                            <Eye className="mx-auto text-emerald-600 bg-emerald-50 p-1 rounded-full" size={24} />
                           ) : (
-                            <EyeOff className="mx-auto text-neutral-300" size={18} />
+                            <EyeOff className="mx-auto text-neutral-300 bg-neutral-50 p-1 rounded-full" size={24} />
                           )}
                         </td>
                         <td className="py-3 px-6 text-right">
-                          <div className="flex items-center justify-end gap-3">
+                          <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => handleOpenProductEdit(product)}
-                              className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors cursor-pointer"
-                              title="Edit"
+                              className="p-2 text-primary hover:text-accent bg-secondary hover:bg-primary/5 rounded-xl transition-all duration-200 cursor-pointer border border-primary/5"
+                              title="Edit Product"
                             >
-                              <Edit size={16} />
+                              <Edit size={14} />
                             </button>
                             <button
                               onClick={() => {
@@ -536,10 +540,10 @@ const AdminDashboard = () => {
                                   productDeleteMutation.mutate(product._id);
                                 }
                               }}
-                              className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
-                              title="Delete"
+                              className="p-2 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100/60 rounded-xl transition-all duration-200 cursor-pointer border border-red-100"
+                              title="Delete Product"
                             >
-                              <Trash2 size={16} />
+                              <Trash2 size={14} />
                             </button>
                           </div>
                         </td>
@@ -561,20 +565,23 @@ const AdminDashboard = () => {
         {activeTab === "categories" && (
           <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Categories</h2>
+              <div>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Categories</h2>
+                <p className="text-neutral-400 text-xs mt-1">Configure layout categories and specify rendering order.</p>
+              </div>
               <button
                 onClick={handleOpenCategoryAdd}
-                className="flex items-center gap-2 px-5 py-3 rounded-full bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider shadow cursor-pointer"
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider shadow-[0_4px_14px_rgba(17,17,17,0.15)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.25)] transition-all cursor-pointer"
               >
                 <Plus size={16} /> Add Category
               </button>
             </div>
 
             {/* Categories list */}
-            <div className="max-w-2xl bg-white rounded-2xl shadow-md border border-accent/10 overflow-hidden">
+            <div className="max-w-2xl bg-white rounded-2xl shadow-sm border border-accent/10 overflow-hidden">
               <table className="w-full text-sm text-neutral-600 text-left">
-                <thead className="bg-neutral-50">
-                  <tr className="border-b border-neutral-100 text-xs uppercase text-neutral-400 font-bold">
+                <thead className="bg-neutral-50/50">
+                  <tr className="border-b border-neutral-100 text-[10px] uppercase text-neutral-400 font-bold tracking-wider">
                     <th className="py-4 px-6">Sequence Order</th>
                     <th className="py-4 px-6">Name</th>
                     <th className="py-4 px-6">Slug</th>
@@ -583,17 +590,18 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {categories?.map((cat) => (
-                    <tr key={cat._id} className="border-b border-neutral-50 hover:bg-secondary/10">
-                      <td className="py-3.5 px-6 font-semibold text-primary">{cat.order}</td>
+                    <tr key={cat._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
+                      <td className="py-3.5 px-6 font-mono font-semibold text-primary">{cat.order}</td>
                       <td className="py-3.5 px-6 font-semibold text-primary">{cat.name}</td>
-                      <td className="py-3.5 px-6 text-neutral-400">{cat.slug}</td>
+                      <td className="py-3.5 px-6 text-neutral-400 font-mono text-xs">{cat.slug}</td>
                       <td className="py-3.5 px-6 text-right">
-                        <div className="flex items-center justify-end gap-3">
+                        <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleOpenCategoryEdit(cat)}
-                            className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors cursor-pointer"
+                            className="p-2 text-primary hover:text-accent bg-secondary hover:bg-primary/5 rounded-xl transition-all duration-200 cursor-pointer border border-primary/5"
+                            title="Edit Category"
                           >
-                            <Edit size={16} />
+                            <Edit size={14} />
                           </button>
                           <button
                             onClick={() => {
@@ -601,9 +609,10 @@ const AdminDashboard = () => {
                                 categoryDeleteMutation.mutate(cat._id);
                               }
                             }}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
+                            className="p-2 text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100/60 rounded-xl transition-all duration-200 cursor-pointer border border-red-100"
+                            title="Delete Category"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={14} />
                           </button>
                         </div>
                       </td>
@@ -624,21 +633,24 @@ const AdminDashboard = () => {
         {activeTab === "leads" && (
           <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Wholesale Inquiry Hub</h2>
+              <div>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">Wholesale Inquiry Hub</h2>
+                <p className="text-neutral-400 text-xs mt-1">Track and manage trade leads, catalog requests, and email inquiries.</p>
+              </div>
               <button
                 onClick={triggerExportCsv}
-                className="flex items-center gap-2 px-5 py-3 rounded-full border border-primary hover:bg-neutral-100 text-primary font-medium text-xs uppercase tracking-wider cursor-pointer"
+                className="flex items-center gap-2 px-5 py-3 rounded-full border border-primary hover:bg-neutral-100 text-primary font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
               >
                 <FileSpreadsheet size={16} /> Export to CSV
               </button>
             </div>
 
             {/* Leads Log */}
-            <div className="bg-white rounded-2xl shadow-md border border-accent/10 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-accent/10 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-neutral-600 text-left">
-                  <thead className="bg-neutral-50">
-                    <tr className="border-b border-neutral-100 text-xs uppercase text-neutral-400 font-bold">
+                  <thead className="bg-neutral-50/50">
+                    <tr className="border-b border-neutral-100 text-[10px] uppercase text-neutral-400 font-bold tracking-wider">
                       <th className="py-4 px-6">Date</th>
                       <th className="py-4 px-6">Name / Company</th>
                       <th className="py-4 px-6">Type</th>
@@ -649,24 +661,24 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {leads?.map((lead) => (
-                      <tr key={lead._id} className="border-b border-neutral-50 hover:bg-secondary/10">
-                        <td className="py-3.5 px-6 text-xs text-neutral-400">
+                      <tr key={lead._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
+                        <td className="py-3.5 px-6 text-xs text-neutral-400 font-mono">
                           {new Date(lead.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3.5 px-6">
                           <div className="font-semibold text-primary">{lead.name}</div>
-                          <div className="text-xs text-neutral-400">{lead.companyName || "N/A"}</div>
+                          <div className="text-xs text-neutral-400 mt-0.5">{lead.companyName || "N/A"}</div>
                         </td>
                         <td className="py-3.5 px-6">
-                          <span className={`px-2.5 py-0.5 rounded text-[10px] uppercase font-bold ${
+                          <span className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
                             lead.type === "catalogue-download" ? "bg-accent/15 text-accent-dark" : "bg-blue-50 text-blue-600"
                           }`}>
-                            {lead.type}
+                            {lead.type === "catalogue-download" ? "Catalogue" : "Quote Request"}
                           </span>
                         </td>
                         <td className="py-3.5 px-6 text-xs">
-                          <div>{lead.phone}</div>
-                          <div className="text-neutral-400">{lead.email}</div>
+                          <div className="font-semibold">{lead.phone}</div>
+                          <div className="text-neutral-400 mt-0.5">{lead.email}</div>
                         </td>
                         <td className="py-3.5 px-6 max-w-xs text-xs whitespace-pre-wrap truncate" title={lead.requirement}>
                           {lead.requirement || "No notes provided"}
@@ -675,11 +687,11 @@ const AdminDashboard = () => {
                           <select
                             value={lead.status}
                             onChange={(e) => leadStatusMutation.mutate({ id: lead._id, status: e.target.value })}
-                            className={`px-3 py-1.5 rounded-lg border text-xs font-semibold focus:outline-none cursor-pointer ${
-                              lead.status === "new" ? "bg-red-50 text-red-600 border-red-200" :
-                              lead.status === "contacted" ? "bg-amber-50 text-amber-600 border-amber-200" :
-                              lead.status === "responded" ? "bg-blue-50 text-blue-600 border-blue-200" :
-                              "bg-emerald-50 text-emerald-600 border-emerald-200"
+                            className={`px-3 py-1.5 rounded-xl border text-[10px] uppercase font-bold tracking-wider tracking-widest focus:outline-none cursor-pointer transition-all ${
+                              lead.status === "new" ? "bg-red-50 text-red-600 border-red-200 focus:ring-1 focus:ring-red-400" :
+                              lead.status === "contacted" ? "bg-amber-50 text-amber-600 border-amber-200 focus:ring-1 focus:ring-amber-400" :
+                              lead.status === "responded" ? "bg-blue-50 text-blue-600 border-blue-200 focus:ring-1 focus:ring-blue-400" :
+                              "bg-emerald-50 text-emerald-600 border-emerald-200 focus:ring-1 focus:ring-emerald-400"
                             }`}
                           >
                             <option value="new">New</option>
@@ -705,14 +717,17 @@ const AdminDashboard = () => {
         {/* 5. SETTINGS TAB */}
         {activeTab === "settings" && (
           <div className="space-y-6 text-left max-w-3xl">
-            <h2 className="heading-luxury text-3xl font-medium text-primary">Website Content Management</h2>
+            <div>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">Website Content Management</h2>
+              <p className="text-neutral-400 text-xs mt-1">Instantly edit public website headlines, catalog resources, and copy.</p>
+            </div>
             
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 settingsMutation.mutate(settingsForm);
               }}
-              className="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-accent/10 space-y-5"
+              className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-accent/10 space-y-5"
             >
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">Hero Headline Title</label>
@@ -721,7 +736,7 @@ const AdminDashboard = () => {
                   required
                   value={settingsForm.heroTitle}
                   onChange={(e) => setSettingsForm({ ...settingsForm, heroTitle: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
@@ -732,7 +747,7 @@ const AdminDashboard = () => {
                   rows={2}
                   value={settingsForm.heroSubtitle}
                   onChange={(e) => setSettingsForm({ ...settingsForm, heroSubtitle: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
@@ -743,7 +758,7 @@ const AdminDashboard = () => {
                   required
                   value={settingsForm.heroImage}
                   onChange={(e) => setSettingsForm({ ...settingsForm, heroImage: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
@@ -754,7 +769,7 @@ const AdminDashboard = () => {
                   required
                   value={settingsForm.catalogueUrl}
                   onChange={(e) => setSettingsForm({ ...settingsForm, catalogueUrl: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
@@ -765,14 +780,14 @@ const AdminDashboard = () => {
                   rows={4}
                   value={settingsForm.aboutText}
                   onChange={(e) => setSettingsForm({ ...settingsForm, aboutText: e.target.value })}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none resize-none"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none resize-none transition-shadow"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={settingsMutation.isPending}
-                className="w-full md:w-auto px-8 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow cursor-pointer"
+                className="w-full md:w-auto px-8 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-[0_4px_14px_rgba(17,17,17,0.1)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.2)] cursor-pointer"
               >
                 {settingsMutation.isPending ? "Saving changes..." : "Save Website Settings"}
               </button>
@@ -783,42 +798,45 @@ const AdminDashboard = () => {
         {/* 6. MEDIA TAB */}
         {activeTab === "media" && (
           <div className="space-y-6 text-left max-w-2xl">
-            <h2 className="heading-luxury text-3xl font-medium text-primary">Media Library</h2>
+            <div>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">Media Library</h2>
+              <p className="text-neutral-400 text-xs mt-1">Upload files and get persistent public links to use in forms.</p>
+            </div>
             
-            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-accent/10 space-y-6">
+            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-accent/10 space-y-6">
               <h3 className="font-serif text-lg text-primary font-medium">Upload File Attachment</h3>
-              <p className="text-neutral-500 text-xs">
+              <p className="text-neutral-500 text-xs leading-relaxed">
                 Upload image assets (JPG, PNG, WEBP) or catalogue PDFs. Once uploaded, the system will output a public URL you can copy directly into your products or content fields.
               </p>
 
               <form onSubmit={handleGeneralUpload} className="space-y-4">
-                <div className="border-2 border-dashed border-neutral-300 rounded-2xl p-6 flex flex-col items-center justify-center bg-secondary/20 hover:bg-secondary/40 transition-colors">
-                  <Image className="text-accent mb-2" size={32} />
+                <div className="border border-dashed border-neutral-300 rounded-2xl p-8 flex flex-col items-center justify-center bg-secondary/20 hover:bg-secondary/40 transition-colors">
+                  <Image className="text-accent mb-3" size={36} />
                   <input
                     type="file"
                     required
                     onChange={(e) => setMediaFile(e.target.files[0])}
-                    className="text-xs text-neutral-600 w-fit cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent/10 file:text-accent-dark hover:file:bg-accent/20"
+                    className="text-xs text-neutral-600 w-fit cursor-pointer file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent/10 file:text-accent-dark hover:file:bg-accent/20 transition-all"
                   />
-                  {mediaFile && <span className="text-xs text-neutral-600 mt-2 font-semibold">{mediaFile.name}</span>}
+                  {mediaFile && <span className="text-xs text-neutral-600 mt-3 font-semibold bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200">{mediaFile.name}</span>}
                 </div>
 
                 <button
                   type="submit"
                   disabled={uploadLoading || !mediaFile}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow disabled:bg-neutral-300 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow disabled:bg-neutral-300 cursor-pointer"
                 >
                   {uploadLoading ? "Uploading to System..." : "Upload Selected File"}
                 </button>
               </form>
 
               {uploadedUrl && (
-                <div className="p-4 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 flex flex-col gap-2">
+                <div className="p-4 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 flex flex-col gap-2 animate-fade-in-up">
                   <div className="flex items-center gap-2 text-xs font-bold">
                     <CheckCircle size={16} className="text-emerald-600" />
                     <span>File Uploaded Successfully!</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-emerald-100 mt-1">
+                  <div className="flex items-center gap-2 bg-white px-3 py-2.5 rounded-xl border border-emerald-100 mt-1">
                     <input
                       type="text"
                       readOnly
@@ -839,7 +857,7 @@ const AdminDashboard = () => {
                       <ExternalLink size={14} />
                     </a>
                   </div>
-                  <span className="text-[10px] text-emerald-600">Click the URL inside the input box to copy it directly.</span>
+                  <span className="text-[10px] text-emerald-600">Click inside the input box to copy the URL directly.</span>
                 </div>
               )}
             </div>
@@ -850,10 +868,10 @@ const AdminDashboard = () => {
       {/* PRODUCTS MODAL (ADD & EDIT) */}
       {productModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
-          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-accent/20 relative my-8 text-left">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-accent/20 relative my-8 text-left animate-fade-in-up">
             <button
               onClick={() => setProductModalOpen(false)}
-              className="absolute top-6 right-6 p-2 text-primary/60 hover:text-accent rounded-full transition-colors cursor-pointer"
+              className="absolute top-6 right-6 p-2 text-primary/60 hover:text-accent rounded-full transition-colors cursor-pointer bg-neutral-50 hover:bg-neutral-100"
             >
               <X size={20} />
             </button>
@@ -878,7 +896,7 @@ const AdminDashboard = () => {
                     required
                     value={productForm.name}
                     onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="Royale Mink Blanket"
                   />
                 </div>
@@ -909,7 +927,7 @@ const AdminDashboard = () => {
                     required
                     value={productForm.gsm}
                     onChange={(e) => setProductForm({ ...productForm, gsm: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="420 GSM"
                   />
                 </div>
@@ -921,7 +939,7 @@ const AdminDashboard = () => {
                     required
                     value={productForm.dimensions}
                     onChange={(e) => setProductForm({ ...productForm, dimensions: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="60 x 90 inches"
                   />
                 </div>
@@ -934,7 +952,7 @@ const AdminDashboard = () => {
                     type="text"
                     value={productForm.material}
                     onChange={(e) => setProductForm({ ...productForm, material: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="Ultra-soft polyester mink"
                   />
                 </div>
@@ -945,7 +963,7 @@ const AdminDashboard = () => {
                     type="text"
                     value={productForm.washCare}
                     onChange={(e) => setProductForm({ ...productForm, washCare: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="Gentle machine wash, Do not bleach"
                   />
                 </div>
@@ -957,13 +975,13 @@ const AdminDashboard = () => {
                   rows={3}
                   value={productForm.images}
                   onChange={(e) => setProductForm({ ...productForm, images: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-xs font-mono focus:border-accent focus:outline-none resize-none"
+                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-xs font-mono focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none resize-none transition-shadow"
                   placeholder="https://images.unsplash.com/photo-xxx..."
                 />
               </div>
 
-              <div className="bg-secondary/40 p-4 rounded-xl border border-neutral-200 flex items-center justify-between">
-                <div className="flex flex-col gap-0.5">
+              <div className="bg-secondary/40 p-5 rounded-2xl border border-accent/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex flex-col gap-0.5 text-center sm:text-left">
                   <span className="text-xs font-bold text-neutral-600">Quick Upload Image Helper</span>
                   <span className="text-[10px] text-neutral-400">Upload a local file to automatically append its URL here.</span>
                 </div>
@@ -971,44 +989,44 @@ const AdminDashboard = () => {
                   type="file"
                   onChange={handleProductImageUpload}
                   disabled={uploadLoading}
-                  className="text-xs text-neutral-500 w-fit cursor-pointer file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[11px] file:font-semibold file:bg-accent/15 file:text-accent-dark"
+                  className="text-xs text-neutral-500 w-fit cursor-pointer file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-[11px] file:font-bold file:bg-accent/15 file:text-accent-dark hover:file:bg-accent/25 transition-all"
                 />
               </div>
 
               <div className="flex items-center gap-6 py-2">
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-neutral-700">
+                <label className="flex items-center gap-2.5 cursor-pointer text-sm font-semibold text-neutral-700">
                   <input
                     type="checkbox"
                     checked={productForm.featured}
                     onChange={(e) => setProductForm({ ...productForm, featured: e.target.checked })}
-                    className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent"
+                    className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent cursor-pointer"
                   />
                   Feature on Homepage Slider
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-semibold text-neutral-700">
+                <label className="flex items-center gap-2.5 cursor-pointer text-sm font-semibold text-neutral-700">
                   <input
                     type="checkbox"
                     checked={productForm.visible}
                     onChange={(e) => setProductForm({ ...productForm, visible: e.target.checked })}
-                    className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent"
+                    className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent cursor-pointer"
                   />
                   Visible in Public Catalog
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100">
+              <div className="flex items-center justify-end gap-3 pt-5 border-t border-neutral-100">
                 <button
                   type="button"
                   onClick={() => setProductModalOpen(false)}
-                  className="px-5 py-3 rounded-xl border border-neutral-300 text-neutral-600 font-semibold text-xs uppercase tracking-wider hover:bg-neutral-50 transition-colors"
+                  className="px-6 py-3 rounded-xl border border-neutral-300 text-neutral-600 font-semibold text-xs uppercase tracking-wider hover:bg-neutral-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={productCreateMutation.isPending || productUpdateMutation.isPending}
-                  className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow"
+                  className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow-[0_4px_14px_rgba(17,17,17,0.1)]"
                 >
                   {productCreateMutation.isPending || productUpdateMutation.isPending ? "Saving Product..." : "Save Product"}
                 </button>
@@ -1021,10 +1039,10 @@ const AdminDashboard = () => {
       {/* CATEGORIES MODAL (ADD & EDIT) */}
       {categoryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-accent/20 relative text-left">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-accent/20 relative text-left animate-fade-in-up">
             <button
               onClick={() => setCategoryModalOpen(false)}
-              className="absolute top-6 right-6 p-2 text-primary/60 hover:text-accent rounded-full transition-colors cursor-pointer"
+              className="absolute top-6 right-6 p-2 text-primary/60 hover:text-accent rounded-full transition-colors cursor-pointer bg-neutral-50 hover:bg-neutral-100"
             >
               <X size={20} />
             </button>
@@ -1047,7 +1065,7 @@ const AdminDashboard = () => {
                   required
                   value={categoryForm.name}
                   onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                   placeholder="e.g. Blankets"
                 />
               </div>
@@ -1060,22 +1078,22 @@ const AdminDashboard = () => {
                   required
                   value={categoryForm.order}
                   onChange={(e) => setCategoryForm({ ...categoryForm, order: parseInt(e.target.value) || 1 })}
-                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none"
+                  className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100">
+              <div className="flex items-center justify-end gap-3 pt-5 border-t border-neutral-100">
                 <button
                   type="button"
                   onClick={() => setCategoryModalOpen(false)}
-                  className="px-5 py-3 rounded-xl border border-neutral-300 text-neutral-600 font-semibold text-xs uppercase tracking-wider hover:bg-neutral-50 transition-colors"
+                  className="px-6 py-3 rounded-xl border border-neutral-300 text-neutral-600 font-semibold text-xs uppercase tracking-wider hover:bg-neutral-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={categoryCreateMutation.isPending || categoryUpdateMutation.isPending}
-                  className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow"
+                  className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-[0_4px_14px_rgba(17,17,17,0.1)]"
                 >
                   {categoryCreateMutation.isPending || categoryUpdateMutation.isPending ? "Saving..." : "Save Category"}
                 </button>
