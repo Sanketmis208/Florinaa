@@ -1,0 +1,239 @@
+{
+  "categories": [
+    {
+      "id": "blankets",
+      "name": "Blankets",
+      "order": 1
+    },
+    {
+      "id": "dohar",
+      "name": "Dohar",
+      "order": 2
+    },
+    {
+      "id": "fitted-sheets",
+      "name": "Fitted Sheets",
+      "order": 3
+    },
+    {
+      "id": "quilts",
+      "name": "Quilts",
+      "order": 4
+    },
+    {
+      "id": "bed-sheets",
+      "name": "Bed Sheets (1+2) & Pillow Covers",
+      "order": 5
+    },
+    {
+      "id": "flano-carpets",
+      "name": "Flano Carpets",
+      "order": 6
+    },
+    {
+      "id": "flano-bath-mats",
+      "name": "Flano Bath Mats",
+      "order": 7
+    },
+    {
+      "id": "flano-rugs",
+      "name": "Flano Rugs",
+      "order": 8
+    },
+    {
+      "id": "new-carpet",
+      "name": "New Carpet",
+      "order": 9
+    },
+    {
+      "id": "new-carpet",
+      "name": "New Carpet",
+      "order": 10
+    }
+  ],
+  "products": [
+    {
+      "id": "royale-mink-blanket",
+      "name": "Royale Mink Blanket",
+      "category": "blankets",
+      "gsm": "420 GSM",
+      "dimensions": "60 x 90 inches",
+      "material": "Ultra-soft polyester mink",
+      "washCare": [
+        "Gentle machine wash",
+        "Do not bleach",
+        "Tumble dry low"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "saanjh-cotton-dohar",
+      "name": "Saanjh Cotton Dohar",
+      "category": "dohar",
+      "gsm": "180 GSM",
+      "dimensions": "90 x 100 inches",
+      "material": "Cotton blend outer with airy filling",
+      "washCare": [
+        "Cold wash",
+        "Line dry",
+        "Warm iron if needed"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "hoteluxe-fitted-sheet",
+      "name": "Hoteluxe Fitted Sheet",
+      "category": "fitted-sheets",
+      "gsm": "155 GSM",
+      "dimensions": "72 x 78 x 10 inches",
+      "material": "Combed cotton rich fabric",
+      "washCare": [
+        "Machine wash",
+        "Use mild detergent",
+        "Avoid direct harsh sun"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1616486029423-aaa4789e8c9a?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "cloudloft-quilt",
+      "name": "Cloudloft Quilt",
+      "category": "quilts",
+      "gsm": "300 GSM",
+      "dimensions": "90 x 108 inches",
+      "material": "Microfiber shell with hollow siliconized filling",
+      "washCare": [
+        "Dry clean preferred",
+        "Air regularly",
+        "Store folded in cotton bag"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "signature-bed-sheet-set",
+      "name": "Signature Bed Sheet Set",
+      "category": "bed-sheets",
+      "gsm": "145 GSM",
+      "dimensions": "King 108 x 108 inches + 2 pillow covers",
+      "material": "Premium cotton blend",
+      "washCare": [
+        "Machine wash cold",
+        "Do not bleach",
+        "Iron on reverse"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1616627561839-074385245ff6?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "heritage-flano-carpet",
+      "name": "Heritage Flano Carpet",
+      "category": "flano-carpets",
+      "gsm": "650 GSM",
+      "dimensions": "5 x 7 feet",
+      "material": "Dense flano pile with anti-skid backing",
+      "washCare": [
+        "Vacuum regularly",
+        "Spot clean",
+        "Professional wash preferred"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600166898405-da9535204843?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "spa-flano-bath-mat",
+      "name": "Spa Flano Bath Mat",
+      "category": "flano-bath-mats",
+      "gsm": "520 GSM",
+      "dimensions": "20 x 32 inches",
+      "material": "Absorbent flano face with anti-skid base",
+      "washCare": [
+        "Machine wash gentle",
+        "Dry flat",
+        "Do not iron backing"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    },
+    {
+      "id": "accent-flano-rug",
+      "name": "Accent Flano Rug",
+      "category": "flano-rugs",
+      "gsm": "600 GSM",
+      "dimensions": "3 x 5 feet",
+      "material": "Soft flano surface with reinforced edges",
+      "washCare": [
+        "Shake dust out",
+        "Spot clean",
+        "Dry in shade"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1594040226829-7f251ab46d80?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "visible": true
+    }
+  ],
+  "inquiries": [],
+  "leads": [
+    {
+      "id": "d3143cf3-6d35-4e0c-bcc9-6f9d3f238f78",
+      "status": "new",
+      "createdAt": "2026-06-17T11:53:36.190Z",
+      "name": "sanket mistry",
+      "phone": "9879619815",
+      "email": "sanmist2108@gmail.com"
+    },
+    {
+      "id": "cb80ad03-ec87-4961-8ed5-044f657a713e",
+      "status": "new",
+      "createdAt": "2026-06-17T11:41:52.452Z",
+      "name": "sanket",
+      "phone": "9879619815",
+      "email": "sanmist2108@gmail.com"
+    },
+    {
+      "id": "01b93bab-9580-4ef3-9f2c-8a118aee16a6",
+      "status": "responded",
+      "createdAt": "2026-06-14T10:10:18.269Z",
+      "name": "Sanket",
+      "phone": "9879619815",
+      "email": "sanmist2108@gmail.com"
+    }
+  ],
+  "content": {
+    "heroTitle": "Where Comfort Meets Elegance",
+    "heroSubtitle": "Premium bedding, blankets, sheets, and soft-floor textiles crafted by Maulifab Pvt. Limited for homes that value quiet luxury.",
+    "heroImage": "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1800&q=90",
+    "catalogueUrl": "/catalogue-placeholder.pdf",
+    "about": "Florinaa - Sleep in Style brings Maulifab's textile manufacturing discipline into a warmer, more design-led home lifestyle brand. From Panipat to premium homes, every piece is designed around softness, durability, and dependable finishing.",
+    "facilityImages": [
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1581093458791-9d15482442f6?auto=format&fit=crop&w=1200&q=85",
+      "https://images.unsplash.com/photo-1581092335878-2d9ff86ca2bf?auto=format&fit=crop&w=1200&q=85"
+    ]
+  }
+}

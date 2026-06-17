@@ -1,0 +1,16 @@
+{
+  "name": "florinaa-premium-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Florinaa - Sleep in Style premium website and admin dashboard",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "mongodb": "^7.3.0"
+  }
+}

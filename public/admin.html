@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Florinaa Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/admin.css">
+    <script defer src="/admin.js"></script>
+  </head>
+  <body>
+    <main class="login-view" data-login-view>
+      <form class="login-card" data-login-form>
+        <p>Florinaa Admin</p>
+        <h1>Sign in</h1>
+        <label>Email<input name="email" type="email" required autofocus></label>
+        <label>Password<input name="password" type="password" required></label>
+        <button type="submit">Continue</button>
+        <small>Credentials are read from environment variables only.</small>
+      </form>
+    </main>
+
+    <main class="admin-shell hidden" data-admin-view>
+      <aside class="sidebar">
+        <a class="logo" href="/">Florinaa<span>Sleep in Style</span></a>
+        <nav>
+          <button class="active" data-section-link="overview">Overview</button>
+          <button data-section-link="products">Products</button>
+          <button data-section-link="categories">Categories</button>
+          <button data-section-link="inquiries">Inquiries</button>
+          <button data-section-link="content">Content</button>
+        </nav>
+        <button class="logout" data-logout>Log out</button>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p>Dashboard</p>
+            <h1 data-page-title>Overview</h1>
+          </div>
+          <a class="visit" href="/" target="_blank" rel="noreferrer">View Site</a>
+        </header>
+
+        <section class="panel-section active" data-section="overview">
+          <div class="metric-grid" data-metrics></div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Recent Activity</h2>
+              <a href="/api/admin/export.csv">Export CSV</a>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Type</th><th>Name</th><th>Interest</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody data-recent></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="products">
+          <div class="panel">
+            <div class="panel-head"><h2 data-product-form-title>Add Product</h2><button data-reset-product>New Product</button></div>
+            <form class="grid-form" data-product-form>
+              <input type="hidden" name="id">
+              <label>Name<input name="name" required></label>
+              <label>Category<select name="category" data-product-category required></select></label>
+              <label>GSM<input name="gsm" required></label>
+              <label>Dimensions<input name="dimensions" required></label>
+              <label class="wide">Material<input name="material" required></label>
+              <label class="wide">Wash Care<textarea name="washCare" rows="3" placeholder="Gentle wash, Do not bleach"></textarea></label>
+              <label class="wide">Image URLs<textarea name="images" rows="4" placeholder="One image URL per line"></textarea></label>
+              <label class="toggle"><input name="visible" type="checkbox" checked> Visible on website</label>
+              <button type="submit">Save Product</button>
+            </form>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Product Catalogue</h2><input data-product-search placeholder="Search products"></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Product</th><th>Category</th><th>GSM</th><th>Visible</th><th>Actions</th></tr></thead>
+                <tbody data-product-table></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="categories">
+          <div class="panel">
+            <div class="panel-head"><h2>Categories</h2><form data-category-form><input name="name" placeholder="New category" required><button>Add</button></form></div>
+            <div class="category-list" data-category-list></div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="inquiries">
+          <div class="panel">
+            <div class="panel-head"><h2>Contact Inquiries</h2><input data-inquiry-search placeholder="Search inquiries"></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Interest</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody data-inquiry-table></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Catalogue Leads</h2><a href="/api/admin/export.csv">Export CSV</a></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody data-lead-table></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section" data-section="content">
+          <div class="panel">
+            <div class="panel-head"><h2>Website Content</h2></div>
+            <form class="grid-form" data-content-form>
+              <label class="wide">Hero Image / Video URL<input name="heroImage"></label>
+              <label class="wide">Hero Title<input name="heroTitle"></label>
+              <label class="wide">Hero Subtitle<textarea name="heroSubtitle" rows="3"></textarea></label>
+              <label class="wide">About Us<textarea name="about" rows="5"></textarea></label>
+              <label class="wide">Facility Gallery URLs<textarea name="facilityImages" rows="5"></textarea></label>
+              <label class="wide">Catalogue PDF URL<input name="catalogueUrl"></label>
+              <button type="submit">Update Content</button>
+            </form>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
