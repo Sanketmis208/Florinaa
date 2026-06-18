@@ -95,7 +95,7 @@ const AdminLogin = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@florinaa.com"
+                placeholder="example@gmail.com"
                 className="w-full pl-11 pr-4 py-3 border border-neutral-300 rounded-xl bg-white text-primary text-sm focus:border-accent focus:outline-none transition-colors"
               />
             </div>
@@ -112,7 +112,7 @@ const AdminLogin = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="password"
                 className="w-full pl-11 pr-4 py-3 border border-neutral-300 rounded-xl bg-white text-primary text-sm focus:border-accent focus:outline-none transition-colors"
               />
             </div>

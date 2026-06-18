@@ -74,11 +74,12 @@ const Products = () => {
   // Filter and Sort logic
   const filteredProducts = products
     ? products.filter((product) => {
+        const matchesVisibility = product.visible !== false;
         const matchesCategory = selectedCategory === "all" || product.category?.slug === selectedCategory;
         const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.gsm.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (product.material && product.material.toLowerCase().includes(searchTerm.toLowerCase()));
-        return matchesCategory && matchesSearch;
+        return matchesVisibility && matchesCategory && matchesSearch;
       })
     : [];
 
@@ -144,21 +145,41 @@ const Products = () => {
         </div>
 
         {/* Filter Controls Row */}
-        <div className="bg-white rounded-2xl p-6 shadow-md border border-accent/10 mb-8 flex flex-col lg:flex-row items-center justify-between gap-5">
-          {/* Search Box */}
-          <div className="relative w-full lg:w-80">
-            <Search className="absolute left-3.5 top-3 text-neutral-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search blankets, materials..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-sm focus:outline-none transition-colors"
-            />
+        <div className="bg-white rounded-2xl p-6 shadow-md border border-accent/10 mb-8 flex flex-col gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Search Box */}
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-3.5 top-3 text-neutral-400" size={18} />
+              <input
+                type="text"
+                placeholder="Search blankets, materials..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-sm focus:outline-none transition-colors"
+              />
+            </div>
+            
+            {/* Sorter */}
+            <div className="relative w-full md:w-48 flex items-center gap-2">
+              <ArrowUpDown size={16} className="text-neutral-400 shrink-0" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-xs uppercase tracking-wider font-semibold focus:outline-none transition-colors cursor-pointer"
+              >
+                <option value="default">Default Sort</option>
+                <option value="name-asc">A - Z Name</option>
+                <option value="name-desc">Z - A Name</option>
+                <option value="gsm-desc">Highest GSM First</option>
+                <option value="gsm-asc">Lowest GSM First</option>
+              </select>
+            </div>
           </div>
 
+          <div className="w-full border-t border-neutral-100" />
+
           {/* Category Quick Filter */}
-          <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto py-1 scrollbar-thin">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 w-full py-1">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-colors shrink-0 cursor-pointer ${
@@ -182,22 +203,6 @@ const Products = () => {
                 {cat.name}
               </button>
             ))}
-          </div>
-
-          {/* Sorter */}
-          <div className="relative w-full lg:w-48 flex items-center gap-2">
-            <ArrowUpDown size={16} className="text-neutral-400 shrink-0" />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-xs uppercase tracking-wider font-semibold focus:outline-none transition-colors cursor-pointer"
-            >
-              <option value="default">Default Sort</option>
-              <option value="name-asc">A - Z Name</option>
-              <option value="name-desc">Z - A Name</option>
-              <option value="gsm-desc">Highest GSM First</option>
-              <option value="gsm-asc">Lowest GSM First</option>
-            </select>
           </div>
         </div>
 

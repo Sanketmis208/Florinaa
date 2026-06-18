@@ -105,7 +105,10 @@ const Home = ({ onDownloadCatalog }) => {
   });
 
   // Featured products filter
-  const featuredProducts = productsData?.filter(p => p.featured) || productsData?.slice(0, 4) || [];
+  const visibleProducts = productsData?.filter(p => p.visible !== false) || [];
+  const featuredProducts = visibleProducts.filter(p => p.featured).length > 0
+    ? visibleProducts.filter(p => p.featured)
+    : visibleProducts.slice(0, 4);
 
   // Submit inquiry mutation
   const inquiryMutation = useMutation({

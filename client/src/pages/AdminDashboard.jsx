@@ -122,6 +122,7 @@ const AdminDashboard = () => {
     mutationFn: productsAPI.create,
     onSuccess: () => {
       queryClient.invalidateQueries(["products-admin"]);
+      queryClient.invalidateQueries(["products"]);
       setProductModalOpen(false);
     },
     onError: (err) => setFormError(err.response?.data?.error || "Failed to create product"),
@@ -131,6 +132,7 @@ const AdminDashboard = () => {
     mutationFn: ({ id, data }) => productsAPI.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(["products-admin"]);
+      queryClient.invalidateQueries(["products"]);
       setProductModalOpen(false);
     },
     onError: (err) => setFormError(err.response?.data?.error || "Failed to update product"),
@@ -138,7 +140,10 @@ const AdminDashboard = () => {
 
   const productDeleteMutation = useMutation({
     mutationFn: productsAPI.delete,
-    onSuccess: () => queryClient.invalidateQueries(["products-admin"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products-admin"]);
+      queryClient.invalidateQueries(["products"]);
+    },
   });
 
   // Categories Mutation
@@ -146,6 +151,7 @@ const AdminDashboard = () => {
     mutationFn: categoriesAPI.create,
     onSuccess: () => {
       queryClient.invalidateQueries(["categories-admin"]);
+      queryClient.invalidateQueries(["categories"]);
       setCategoryModalOpen(false);
     },
     onError: (err) => setFormError(err.response?.data?.error || "Failed to create category"),
@@ -155,6 +161,7 @@ const AdminDashboard = () => {
     mutationFn: ({ id, data }) => categoriesAPI.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(["categories-admin"]);
+      queryClient.invalidateQueries(["categories"]);
       setCategoryModalOpen(false);
     },
     onError: (err) => setFormError(err.response?.data?.error || "Failed to update category"),
@@ -162,7 +169,10 @@ const AdminDashboard = () => {
 
   const categoryDeleteMutation = useMutation({
     mutationFn: categoriesAPI.delete,
-    onSuccess: () => queryClient.invalidateQueries(["categories-admin"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["categories-admin"]);
+      queryClient.invalidateQueries(["categories"]);
+    },
     onError: (err) => alert(err.response?.data?.error || "Failed to delete category"),
   });
 
@@ -175,7 +185,11 @@ const AdminDashboard = () => {
   // Content Settings Mutation
   const settingsMutation = useMutation({
     mutationFn: contentAPI.update,
-    onSuccess: () => alert("Website content updated successfully!"),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["content-admin"]);
+      queryClient.invalidateQueries(["content"]);
+      alert("Website content updated successfully!");
+    },
     onError: (err) => alert(err.response?.data?.error || "Update failed"),
   });
 
@@ -318,12 +332,12 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-secondary pt-20 flex">
+    <div className="min-h-screen bg-secondary flex">
       {/* Sidebar Navigation */}
       <aside className="w-64 bg-primary text-secondary/70 flex flex-col border-r border-[rgba(200,169,126,0.15)] shrink-0 hidden md:flex">
-        <div className="p-6 border-b border-secondary/10 flex items-center gap-3">
-          <img src="/FLORINAA_Logo_Transparent.png" alt="" className="h-8 w-auto brightness-0 invert" />
-          <span className="font-serif text-xs uppercase tracking-widest font-semibold text-white">Florinaa Control</span>
+        <div className="p-6 border-b border-secondary/10 flex flex-col items-center justify-center gap-3.5 text-center">
+          <img src="/FLORINAA_Logo_Transparent.png" alt="" className="h-[58px] w-auto brightness-0 invert" />
+          <span className="font-serif text-[15px] uppercase tracking-[0.25em] font-bold text-accent mt-1">Admin Panel</span>
         </div>
         <nav className="flex-grow p-4 space-y-1.5">
           {sidebarLinks.map((link) => {
@@ -519,11 +533,23 @@ const AdminDashboard = () => {
                           )}
                         </td>
                         <td className="py-3 px-6 text-center">
-                          {product.visible ? (
-                            <Eye className="mx-auto text-emerald-600 bg-emerald-50 p-1 rounded-full" size={24} />
-                          ) : (
-                            <EyeOff className="mx-auto text-neutral-300 bg-neutral-50 p-1 rounded-full" size={24} />
-                          )}
+                          <button
+                            onClick={() => {
+                              productUpdateMutation.mutate({
+                                id: product._id,
+                                data: { visible: !product.visible }
+                              });
+                            }}
+                            className="mx-auto block p-1 rounded-xl hover:bg-neutral-100 transition-all cursor-pointer border border-transparent hover:border-neutral-200"
+                            title={product.visible ? "Hide from catalog" : "Show in catalog"}
+                            disabled={productUpdateMutation.isPending}
+                          >
+                            {product.visible ? (
+                              <Eye className="text-emerald-600 bg-emerald-50 p-1 rounded-full" size={24} />
+                            ) : (
+                              <EyeOff className="text-neutral-400 bg-neutral-50 p-1 rounded-full" size={24} />
+                            )}
+                          </button>
                         </td>
                         <td className="py-3 px-6 text-right">
                           <div className="flex items-center justify-end gap-2">

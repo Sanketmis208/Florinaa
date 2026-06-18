@@ -306,11 +306,11 @@ const Navbar = ({ onDownloadCatalog }) => {
 
                 <div className="text-center pt-4">
                   <a
-                    href="tel:+919879619815"
+                    href="tel:+919896915012"
                     className="inline-flex items-center gap-1.5 text-[10px] tracking-widest uppercase text-accent font-semibold hover:text-accent-dark transition-colors"
                   >
                     <Phone size={10} />
-                    +91 98796 19815
+                    Mr Sandeep Tayal: +91 98969 15012
                   </a>
                 </div>
               </motion.div>

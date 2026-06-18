@@ -6,13 +6,13 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const handleWhatsApp = () => {
-    // Panipat Office/Maulifab contact details
-    window.open("https://wa.me/919879619815?text=Hello%20Florinaa%20team,%20I'm%20interested%20in%20your%20premium%20blankets%20and%20bedding%20collection.", "_blank");
+    // Contact details for WhatsApp chat
+    window.open("https://wa.me/919896915012?text=Hello%20Florinaa%20team,%20I'm%20interested%20in%20your%20premium%20blankets%20and%20bedding%20collection.", "_blank");
   };
 
   return (
     <footer className="bg-primary text-secondary/90 border-t border-[rgba(200,169,126,0.1)] pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
         {/* Brand Column */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center">
@@ -80,7 +80,11 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-3">
               <Phone size={16} className="text-accent shrink-0" />
-              <span>+91 9879619815</span>
+              <div className="flex flex-col">
+                <span className="font-semibold text-white">Mr Sandeep Tayal</span>
+                <span>+91 9896915012</span>
+                <span className="text-xs text-secondary/40 mt-0.5">Office: +91 9879619815</span>
+              </div>
             </li>
             <li className="flex items-center gap-3">
               <Mail size={16} className="text-accent shrink-0" />
@@ -89,21 +93,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Admin and Newsletter */}
-        <div className="flex flex-col gap-4">
-          <h3 className="font-serif text-white text-base tracking-wider uppercase font-medium border-b border-accent/20 pb-2">
-            Administration
-          </h3>
-          <p className="text-secondary/70 text-sm leading-relaxed">
-            Authorized administrators can access database settings and lead management panels below.
-          </p>
-          <Link
-            to="/admin"
-            className="flex items-center gap-2 mt-2 px-5 py-2 rounded border border-secondary/20 hover:border-accent hover:text-accent text-xs uppercase font-medium transition-colors w-fit"
-          >
-            Admin Dashboard
-          </Link>
-        </div>
+
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 border-t border-[rgba(200,169,126,0.08)] pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-secondary/50">
