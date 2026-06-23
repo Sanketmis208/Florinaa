@@ -164,26 +164,7 @@ const About = () => {
                 ))}
               </div>
 
-              {/* Factory Image */}
-              <motion.div
-                className="mt-6 rounded-2xl overflow-hidden shadow-lg"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1586528116022-09e8b50e6920?auto=format&fit=crop&w=800&q=80"
-                  alt="Florinaa textile manufacturing"
-                  className="w-full h-56 object-cover hover:scale-105 transition-transform duration-700"
-                />
-                <div className="bg-white px-5 py-4 flex items-center gap-3">
-                  <Factory size={16} className="text-accent" />
-                  <span className="text-xs uppercase tracking-widest text-neutral-500 font-medium">
-                    Manufacturing Hub — Panipat, India
-                  </span>
-                </div>
-              </motion.div>
+
             </div>
           </div>
         </div>

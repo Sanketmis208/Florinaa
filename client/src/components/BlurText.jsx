@@ -14,6 +14,7 @@ const buildKeyframes = (from, steps) => {
 const BlurText = ({
   text = '',
   delay = 200,
+  baseDelay = 0.2, // Base delay in seconds before animation starts
   className = '',
   animateBy = 'words',
   direction = 'top',
@@ -80,7 +81,7 @@ const BlurText = ({
         const spanTransition = {
           duration: totalDuration,
           times,
-          delay: (index * delay) / 1000
+          delay: baseDelay + (index * delay) / 1000
         };
         spanTransition.ease = easing;
 

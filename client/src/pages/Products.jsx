@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { 
@@ -13,9 +13,60 @@ import {
   ArrowRight,
   Download,
   AlertCircle,
-  FileText
+  FileText,
+  ChevronDown
 } from "lucide-react";
 import { productsAPI, categoriesAPI, leadsAPI } from "../services/api";
+
+const TiltCard = ({ children, className, onClick }) => {
+  const cardRef = useRef(null);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5; // [-0.5, 0.5]
+    const y = (e.clientY - top) / height - 0.5; // [-0.5, 0.5]
+    setCoords({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCoords({ x: 0, y: 0 });
+  };
+
+  const rotateX = isHovered ? -coords.y * 15 : 0; // max 15 deg tilt
+  const rotateY = isHovered ? coords.x * 15 : 0;  // max 15 deg tilt
+  const scale = isHovered ? 1.02 : 1.0;
+  const shadow = isHovered 
+    ? "0 20px 40px rgba(200, 169, 126, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)"
+    : "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)";
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      className={`${className} transition-all duration-300 ease-out`}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${scale}, ${scale}, 1)`,
+        boxShadow: shadow,
+        transformStyle: "preserve-3d",
+      }}
+    >
+      <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="h-full flex flex-col justify-between">
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const Products = () => {
   const location = useLocation();
@@ -58,9 +109,20 @@ const Products = () => {
   // Submit quote request mutation
   const quoteMutation = useMutation({
     mutationFn: (data) => leadsAPI.submit(data),
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       setQuoteSuccess(true);
       setQuoteError("");
+      
+      // Redirect to WhatsApp
+      const name = variables.name || "";
+      const email = variables.email || "";
+      const phone = variables.phone || "";
+      const requirement = variables.requirement || "";
+      
+      const whatsappText = `Hello, I've submitted a product price inquiry:\n\n*Customer Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n\n*Inquiry Details:*\n${requirement}`;
+      const whatsappUrl = `https://wa.me/919879619815?text=${encodeURIComponent(whatsappText)}`;
+      window.open(whatsappUrl, "_blank");
+
       setQuoteForm({ name: "", email: "", phone: "", message: "" });
       setTimeout(() => {
         setQuoteSuccess(false);
@@ -122,7 +184,7 @@ const Products = () => {
       name: quoteForm.name,
       email: quoteForm.email,
       phone: quoteForm.phone,
-      requirement: `Quotation requested for: ${selectedProduct.name}. Message: ${quoteForm.message || "No specific comments"}`,
+      requirement: `Product: ${selectedProduct.name}\nMessage: ${quoteForm.message || "No specific comments"}`,
       type: "inquiry",
     });
   };
@@ -148,24 +210,24 @@ const Products = () => {
         <div className="bg-white rounded-2xl p-6 shadow-md border border-accent/10 mb-8 flex flex-col gap-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Search Box */}
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3.5 top-3 text-neutral-400" size={18} />
+            <div className="relative w-full md:w-80 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors" size={18} />
               <input
                 type="text"
                 placeholder="Search blankets, materials..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-sm focus:outline-none transition-colors"
+                className="w-full pl-11 pr-4 py-2.5 rounded-full border border-neutral-300 hover:border-neutral-400 focus:border-accent focus:ring-1 focus:ring-accent bg-secondary/20 focus:bg-white text-sm focus:outline-none transition-all duration-300"
               />
             </div>
             
             {/* Sorter */}
-            <div className="relative w-full md:w-48 flex items-center gap-2">
-              <ArrowUpDown size={16} className="text-neutral-400 shrink-0" />
+            <div className="relative w-full md:w-48 group">
+              <ArrowUpDown className="absolute left-4 top-1/2 -translate-y-1/2 text-accent pointer-events-none group-hover:text-accent-dark transition-colors" size={14} />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full pl-4 pr-10 py-2.5 rounded-xl border border-neutral-300 focus:border-accent bg-secondary/30 text-xs uppercase tracking-wider font-semibold focus:outline-none transition-colors cursor-pointer"
+                className="w-full pl-10 pr-10 py-2.5 rounded-full border border-accent/40 hover:border-accent focus:border-accent focus:ring-1 focus:ring-accent bg-secondary/20 hover:bg-secondary/35 text-neutral-700 text-[11px] uppercase tracking-wider font-semibold focus:outline-none transition-all duration-300 cursor-pointer appearance-none"
               >
                 <option value="default">Default Sort</option>
                 <option value="name-asc">A - Z Name</option>
@@ -173,6 +235,7 @@ const Products = () => {
                 <option value="gsm-desc">Highest GSM First</option>
                 <option value="gsm-asc">Lowest GSM First</option>
               </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none group-hover:text-neutral-500 transition-colors" size={14} />
             </div>
           </div>
 
@@ -226,12 +289,13 @@ const Products = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {sortedProducts.map((product) => (
-              <div
+              <TiltCard
                 key={product._id}
-                className="bg-white rounded-2xl overflow-hidden shadow-md border border-accent/10 flex flex-col h-full group hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-2xl overflow-hidden border border-accent/10 flex flex-col h-full group cursor-pointer"
+                onClick={() => handleOpenModal(product)}
               >
                 {/* Product Image */}
-                <div className="h-64 overflow-hidden relative bg-neutral-100 cursor-pointer" onClick={() => handleOpenModal(product)}>
+                <div className="h-64 overflow-hidden relative bg-neutral-100">
                   <img
                     src={product.images?.[0] || "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=85"}
                     alt={product.name}
@@ -251,8 +315,7 @@ const Products = () => {
                       {product.category?.name || "Blankets"}
                     </span>
                     <h3
-                      onClick={() => handleOpenModal(product)}
-                      className="font-serif text-lg font-medium text-primary hover:text-accent cursor-pointer transition-colors line-clamp-1"
+                      className="font-serif text-lg font-medium text-primary hover:text-accent transition-colors line-clamp-1"
                     >
                       {product.name}
                     </h3>
@@ -272,15 +335,14 @@ const Products = () => {
                   </div>
 
                   <div className="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <button
-                      onClick={() => handleOpenModal(product)}
-                      className="text-xs uppercase tracking-widest font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1 cursor-pointer"
+                    <span
+                      className="text-xs uppercase tracking-widest font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1"
                     >
                       Specifications <ArrowRight size={12} />
-                    </button>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </div>
         )}

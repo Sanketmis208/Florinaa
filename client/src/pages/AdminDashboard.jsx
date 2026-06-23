@@ -20,7 +20,8 @@ import {
   Eye,
   EyeOff,
   AlertCircle,
-  X
+  X,
+  Search
 } from "lucide-react";
 import { 
   authAPI, 
@@ -52,6 +53,7 @@ const AdminDashboard = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
 
   const [formError, setFormError] = useState("");
+  const [productSearch, setProductSearch] = useState("");
 
   // Queries
   const { data: user, isLoading: userLoading } = useQuery({
@@ -87,6 +89,17 @@ const AdminDashboard = () => {
   // Settings State Form
   const [settingsForm, setSettingsForm] = useState({
     heroTitle: "", heroSubtitle: "", heroImage: "", catalogueUrl: "", aboutText: ""
+  });
+
+  // Filter products by search input
+  const filteredProducts = products?.filter((product) => {
+    const searchLower = productSearch.toLowerCase();
+    return (
+      product.name?.toLowerCase().includes(searchLower) ||
+      product.category?.name?.toLowerCase().includes(searchLower) ||
+      product.gsm?.toLowerCase().includes(searchLower) ||
+      product.dimensions?.toLowerCase().includes(searchLower)
+    );
   });
 
   useEffect(() => {
@@ -482,17 +495,29 @@ const AdminDashboard = () => {
         {/* 2. PRODUCTS CRUD TAB */}
         {activeTab === "products" && (
           <div className="space-y-6 text-left">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Products</h2>
                 <p className="text-neutral-400 text-xs mt-1">Create, update, or temporarily hide wholesale product listings.</p>
               </div>
               <button
                 onClick={handleOpenProductAdd}
-                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider shadow-[0_4px_14px_rgba(17,17,17,0.15)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.25)] transition-all cursor-pointer"
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider shadow-[0_4px_14px_rgba(17,17,17,0.15)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.25)] transition-all cursor-pointer self-start sm:self-auto"
               >
                 <Plus size={16} /> Add Product
               </button>
+            </div>
+
+            {/* Product Search Bar */}
+            <div className="relative max-w-md group">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors" size={16} />
+              <input
+                type="text"
+                placeholder="Search products by name, category, GSM, size..."
+                value={productSearch}
+                onChange={(e) => setProductSearch(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-neutral-200 hover:border-neutral-300 focus:border-accent focus:ring-1 focus:ring-accent bg-white text-xs focus:outline-none transition-all duration-200 shadow-sm"
+              />
             </div>
 
             {/* Products Table */}
@@ -512,7 +537,7 @@ const AdminDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products?.map((product) => (
+                    {filteredProducts?.map((product) => (
                       <tr key={product._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
                         <td className="py-3 px-6">
                           <img
@@ -575,9 +600,13 @@ const AdminDashboard = () => {
                         </td>
                       </tr>
                     ))}
-                    {(!products || products.length === 0) && (
+                    {(!filteredProducts || filteredProducts.length === 0) && (
                       <tr>
-                        <td colSpan={8} className="text-center py-8 text-neutral-400 italic">No products found. Add your first item.</td>
+                        <td colSpan={8} className="text-center py-8 text-neutral-400 italic">
+                          {products && products.length > 0
+                            ? "No products match your search query."
+                            : "No products found. Add your first item."}
+                        </td>
                       </tr>
                     )}
                   </tbody>
