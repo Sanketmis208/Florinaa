@@ -367,11 +367,11 @@ const Products = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
               {/* Left Column - Gallery */}
               <div className="lg:col-span-6 flex flex-col gap-4">
-                <div className="h-[300px] md:h-[380px] rounded-2xl overflow-hidden bg-neutral-100 border border-neutral-200">
+                <div className="h-[380px] md:h-[480px] rounded-2xl overflow-hidden bg-secondary/30 border border-accent/15 flex items-center justify-center p-2">
                   <img
                     src={selectedProduct.images?.[activeImageIdx] || "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=85"}
                     alt={selectedProduct.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
 

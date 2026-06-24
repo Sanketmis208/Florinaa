@@ -52,12 +52,14 @@ html {
   color: #333333;
   background-color: #F8F5F1;
   overflow-x: hidden;
+  overscroll-behavior: none;
 }
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overscroll-behavior: none;
 }
 
 *, *::before, *::after {

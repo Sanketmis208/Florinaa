@@ -64,12 +64,12 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <div className="flex flex-col min-h-screen bg-secondary">
+    <div className={`flex flex-col ${isAdminRoute ? "h-screen overflow-hidden" : "min-h-screen"} bg-secondary`}>
       {/* Header / Navigation */}
       {!isAdminRoute && <Navbar onDownloadCatalog={() => setIsDownloadModalOpen(true)} />}
 
       {/* Main Routes */}
-      <main className="flex-grow">
+      <main className={`flex-grow ${isAdminRoute ? "h-full overflow-hidden" : ""}`}>
         <Routes>
             <Route path="/" element={<Home onDownloadCatalog={() => setIsDownloadModalOpen(true)} />} />
             <Route path="/products" element={<Products />} />

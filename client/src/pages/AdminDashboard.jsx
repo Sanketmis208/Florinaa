@@ -345,7 +345,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-secondary flex">
+    <div className="h-screen overflow-hidden bg-secondary flex">
       {/* Sidebar Navigation */}
       <aside className="w-64 bg-primary text-secondary/70 flex flex-col border-r border-[rgba(200,169,126,0.15)] shrink-0 hidden md:flex">
         <div className="p-6 border-b border-secondary/10 flex flex-col items-center justify-center gap-3.5 text-center">
