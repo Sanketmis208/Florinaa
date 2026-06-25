@@ -54,6 +54,15 @@ const submitLimiter = rateLimit({
   }
 });
 
+// Build dynamic CSP connect sources based on environment
+const connectSources = ["'self'", "*.cloudinary.com"];
+if (process.env.NODE_ENV !== "production") {
+  connectSources.push("http://localhost:3000", "ws://localhost:5173", "http://localhost:5173");
+}
+if (process.env.CLIENT_URL) {
+  connectSources.push(process.env.CLIENT_URL);
+}
+
 // Mount Helmet for security headers (including Content Security Policy)
 app.use(
   helmet({
@@ -70,7 +79,7 @@ app.use(
           "*.cloudinary.com",
           "images.unsplash.com"
         ],
-        connectSrc: ["'self'", "*.cloudinary.com", "http://localhost:3000", "ws://localhost:5173", "http://localhost:5173"],
+        connectSrc: connectSources,
         mediaSrc: ["'self'", "*.cloudinary.com"],
         frameSrc: ["'self'", "www.google.com", "maps.google.com", "www.google.com/maps", "maps.google.co.in", "www.google.co.in"],
       },
@@ -92,11 +101,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl)
+      // Allow requests with no origin (like mobile apps, curl, or same-origin via Vercel rewrites)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
+      } else if (process.env.NODE_ENV !== "production") {
+        callback(null, true); // Allow all in development
       } else {
-        callback(null, true); // Fallback to allow dev convenience
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,

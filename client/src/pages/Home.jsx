@@ -175,7 +175,7 @@ const Home = ({ onDownloadCatalog }) => {
     const { clientX, clientY } = e;
     const { left, top, width, height } =
       heroRef.current.getBoundingClientRect();
-    
+
     // Normalize coordinates to [-1, 1] for WebGL 3D Canvas
     mouseX.current = ((clientX - left) / width) * 2 - 1;
     mouseY.current = -(((clientY - top) / height) * 2 - 1);
@@ -212,17 +212,25 @@ const Home = ({ onDownloadCatalog }) => {
         ease: "power2.inOut",
       });
 
-      tl.from(".hero-sub", {
-        opacity: 0,
-        y: 40,
-        duration: 1.2,
-      }, "-=1.0");
+      tl.from(
+        ".hero-sub",
+        {
+          opacity: 0,
+          y: 40,
+          duration: 1.2,
+        },
+        "-=1.0",
+      );
 
-      tl.from(".hero-ctas", {
-        opacity: 0,
-        y: 30,
-        duration: 1.0,
-      }, "-=0.8");
+      tl.from(
+        ".hero-ctas",
+        {
+          opacity: 0,
+          y: 30,
+          duration: 1.0,
+        },
+        "-=0.8",
+      );
 
       // 2. Parallax Hero Scroll Effect
       gsap.to(".hero-bg-image", {
@@ -239,7 +247,8 @@ const Home = ({ onDownloadCatalog }) => {
       // 3. GSAP Horizontal Scroll for Product Experience
       if (horizontalSectionRef.current && featuredProducts.length > 1) {
         gsap.to(horizontalSectionRef.current, {
-          x: () => -(horizontalSectionRef.current.scrollWidth - window.innerWidth),
+          x: () =>
+            -(horizontalSectionRef.current.scrollWidth - window.innerWidth),
           ease: "none",
           scrollTrigger: {
             trigger: horizontalTriggerRef.current,
@@ -337,9 +346,11 @@ const Home = ({ onDownloadCatalog }) => {
       >
         {/* Lazy Loaded 3D WebGL Canvas Layer (with mobile/reduced motion 2D fallback) */}
         <div className="hero-canvas-container absolute inset-0 z-0">
-          <Suspense fallback={
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary via-[#161412] to-[#251e18]" />
-          }>
+          <Suspense
+            fallback={
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary via-[#161412] to-[#251e18]" />
+            }
+          >
             <Hero3DCanvas mouseX={mouseX} mouseY={mouseY} />
           </Suspense>
         </div>
@@ -490,7 +501,9 @@ const Home = ({ onDownloadCatalog }) => {
                   Complete Bedding set
                 </h3>
                 <p className="text-secondary/70 text-sm mb-4 font-light">
-                  Coordinated luxury bedding sets including matching sheets, pillow cases, and duvets designed for an exquisite sleep experience.
+                  Coordinated luxury bedding sets including matching sheets,
+                  pillow cases, and duvets designed for an exquisite sleep
+                  experience.
                 </p>
                 <Link
                   to="/products?category=fitted-sheets"
@@ -661,119 +674,119 @@ const Home = ({ onDownloadCatalog }) => {
       {/* 4. PRODUCT EXPERIENCE (GSAP HORIZONTAL SCROLL) */}
       {featuredProducts.length > 0 && (
         <div ref={horizontalTriggerRef} className="bg-secondary relative">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-8">
-          <span className="text-xs uppercase tracking-widest text-accent font-semibold block mb-2">
-            Bespoke Comfort
-          </span>
-          <BlurText
-            text="Featured Creations"
-            tag="h2"
-            delay={140}
-            animateBy="words"
-            direction="bottom"
-            className="heading-luxury text-4xl md:text-5xl text-primary font-medium"
-          />
-          <p className="text-neutral-500 text-sm mt-3 max-w-xl">
-            Swipe through a closer inspection of our premium items. Look at
-            custom fabric weaves, dimensions, and specifications.
-          </p>
-        </div>
+          <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-8">
+            <span className="text-xs uppercase tracking-widest text-accent font-semibold block mb-2">
+              Bespoke Comfort
+            </span>
+            <BlurText
+              text="Featured Creations"
+              tag="h2"
+              delay={140}
+              animateBy="words"
+              direction="bottom"
+              className="heading-luxury text-4xl md:text-5xl text-primary font-medium"
+            />
+            <p className="text-neutral-500 text-sm mt-3 max-w-xl">
+              Swipe through a closer inspection of our premium items. Look at
+              custom fabric weaves, dimensions, and specifications.
+            </p>
+          </div>
 
-        {/* Scroll Container */}
-        <div className="overflow-hidden w-full h-[650px] relative">
-          <div
-            ref={horizontalSectionRef}
-            className="flex h-full pl-6 md:pl-12 w-[400%]"
-            style={{ width: `${featuredProducts.length * 100}vw` }}
-          >
-            {featuredProducts.length > 0 ? (
-              featuredProducts.map((product, index) => (
-                <div
-                  key={product._id}
-                  className="horizontal-panel w-screen h-full shrink-0 flex items-center pr-6 md:pr-24"
-                >
-                  <div className="w-full h-[480px] bg-white rounded-3xl overflow-hidden shadow-xl border border-accent/10 p-6 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    {/* Left - Image Carousel Hook */}
-                    <div className="h-full rounded-2xl overflow-hidden relative group">
-                      <img
-                        src={
-                          product.images?.[0] ||
-                          "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=85"
-                        }
-                        alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />
-                    </div>
-
-                    {/* Right - Product Details */}
-                    <div className="flex flex-col gap-4 text-left">
-                      <span className="text-xs uppercase tracking-wider font-semibold text-accent">
-                        {product.category?.name || "Premium beddings"}
-                      </span>
-                      <h3 className="heading-luxury text-3xl md:text-4xl text-primary font-medium">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-neutral-600 leading-relaxed max-w-md">
-                        {product.material ||
-                          "Crafted using premium high-longevity yarn with special thermal traps for maximum winter isolation and breathability."}
-                      </p>
-
-                      {/* Specs badges */}
-                      <div className="grid grid-cols-2 gap-3 max-w-md my-2">
-                        <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
-                          <span className="text-[10px] uppercase font-bold text-neutral-500">
-                            Weight GSM
-                          </span>
-                          <span className="text-sm font-semibold text-primary">
-                            {product.gsm}
-                          </span>
-                        </div>
-                        <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
-                          <span className="text-[10px] uppercase font-bold text-neutral-500">
-                            Dimensions
-                          </span>
-                          <span
-                            className="text-sm font-semibold text-primary truncate"
-                            title={product.dimensions}
-                          >
-                            {product.dimensions}
-                          </span>
-                        </div>
+          {/* Scroll Container */}
+          <div className="overflow-hidden w-full h-[650px] relative">
+            <div
+              ref={horizontalSectionRef}
+              className="flex h-full pl-6 md:pl-12 w-[400%]"
+              style={{ width: `${featuredProducts.length * 100}vw` }}
+            >
+              {featuredProducts.length > 0 ? (
+                featuredProducts.map((product, index) => (
+                  <div
+                    key={product._id}
+                    className="horizontal-panel w-screen h-full shrink-0 flex items-center pr-6 md:pr-24"
+                  >
+                    <div className="w-full h-[480px] bg-white rounded-3xl overflow-hidden shadow-xl border border-accent/10 p-6 md:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                      {/* Left - Image Carousel Hook */}
+                      <div className="h-full rounded-2xl overflow-hidden relative group">
+                        <img
+                          src={
+                            product.images?.[0] ||
+                            "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=85"
+                          }
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />
                       </div>
 
-                      <div className="flex items-center gap-4 mt-2">
-                        <a
-                          href="#inquiry"
-                          onClick={() => {
-                            setInquiryForm((prev) => ({
-                              ...prev,
-                              requirement: `Inquiry regarding: ${product.name} (${product.gsm}, ${product.dimensions})`,
-                            }));
-                          }}
-                          className="px-6 py-3 rounded-full bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow-md text-center cursor-pointer"
-                        >
-                          Request Quotation
-                        </a>
-                        <Link
-                          to={`/products`}
-                          className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent-dark transition-colors inline-flex items-center gap-1.5"
-                        >
-                          Full Catalogue <ArrowRight size={14} />
-                        </Link>
+                      {/* Right - Product Details */}
+                      <div className="flex flex-col gap-4 text-left">
+                        <span className="text-xs uppercase tracking-wider font-semibold text-accent">
+                          {product.category?.name || "Premium beddings"}
+                        </span>
+                        <h3 className="heading-luxury text-3xl md:text-4xl text-primary font-medium">
+                          {product.name}
+                        </h3>
+                        <p className="text-sm text-neutral-600 leading-relaxed max-w-md">
+                          {product.material ||
+                            "Crafted using premium high-longevity yarn with special thermal traps for maximum winter isolation and breathability."}
+                        </p>
+
+                        {/* Specs badges */}
+                        <div className="grid grid-cols-2 gap-3 max-w-md my-2">
+                          <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
+                            <span className="text-[10px] uppercase font-bold text-neutral-500">
+                              Weight GSM
+                            </span>
+                            <span className="text-sm font-semibold text-primary">
+                              {product.gsm}
+                            </span>
+                          </div>
+                          <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
+                            <span className="text-[10px] uppercase font-bold text-neutral-500">
+                              Dimensions
+                            </span>
+                            <span
+                              className="text-sm font-semibold text-primary truncate"
+                              title={product.dimensions}
+                            >
+                              {product.dimensions}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 mt-2">
+                          <a
+                            href="#inquiry"
+                            onClick={() => {
+                              setInquiryForm((prev) => ({
+                                ...prev,
+                                requirement: `Inquiry regarding: ${product.name} (${product.gsm}, ${product.dimensions})`,
+                              }));
+                            }}
+                            className="px-6 py-3 rounded-full bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow-md text-center cursor-pointer"
+                          >
+                            Request Quotation
+                          </a>
+                          <Link
+                            to={`/products`}
+                            className="text-xs uppercase tracking-widest font-semibold text-accent hover:text-accent-dark transition-colors inline-flex items-center gap-1.5"
+                          >
+                            Full Catalogue <ArrowRight size={14} />
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="w-screen flex items-center justify-center text-neutral-500 font-light italic">
+                  Loading products showcase...
                 </div>
-              ))
-            ) : (
-              <div className="w-screen flex items-center justify-center text-neutral-500 font-light italic">
-                Loading products showcase...
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
       )}
 
       {/* 5. FACTORY PROCESS TIMELINE */}
