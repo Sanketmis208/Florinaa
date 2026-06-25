@@ -9,7 +9,7 @@ const Lead = require("../models/Lead");
 const Content = require("../models/Content");
 const User = require("../models/User");
 
-const dbPath = path.join(__dirname, "../..", "data", "db.json");
+const dbPath = path.join(__dirname, "..", "data", "db.json");
 
 const runMigration = async () => {
   try {

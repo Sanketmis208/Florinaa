@@ -4,8 +4,9 @@
   "private": true,
   "description": "Florinaa - Sleep in Style premium website and admin dashboard",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node backend/server.js",
+    "start": "node backend/server.js",
+    "dev:mock": "node backend/mock-server.js"
   },
   "engines": {
     "node": ">=20"

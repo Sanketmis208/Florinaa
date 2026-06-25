@@ -4,7 +4,7 @@ const path = require("path");
 const crypto = require("crypto");
 
 const root = __dirname;
-const publicDir = path.join(root, "public");
+const publicDir = path.join(root, "..", "client", "public-legacy");
 const dbPath = path.join(root, "data", "db.json");
 const port = Number(process.env.PORT || 3000);
 const attempts = new Map();
