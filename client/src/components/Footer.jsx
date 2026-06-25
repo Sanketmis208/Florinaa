@@ -1,13 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Phone, Mail, MapPin, Send, MessageCircle } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleWhatsApp = () => {
     // Contact details for WhatsApp chat
     window.open("https://wa.me/919896915012?text=Hello%20Florinaa%20team,%20I'm%20interested%20in%20your%20premium%20blankets%20and%20bedding%20collection.", "_blank");
+  };
+
+  // Handle quick link clicks – smooth scroll if on homepage, navigate first if on another page
+  const handleQuickLink = (e, sectionId) => {
+    e.preventDefault();
+    if (location.pathname === "/") {
+      // Already on homepage – just smooth scroll to the section
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Navigate to homepage with hash – the homepage will scroll to the section
+      navigate("/#" + sectionId);
+    }
   };
 
   return (
@@ -41,22 +58,22 @@ const Footer = () => {
           </h3>
           <ul className="flex flex-col gap-2.5 text-sm text-secondary/70">
             <li>
-              <a href="#collection" className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a href="/#collection" onClick={(e) => handleQuickLink(e, "collection")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
                 Luxury Collection
               </a>
             </li>
             <li>
-              <a href="#excellence" className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a href="/#excellence" onClick={(e) => handleQuickLink(e, "excellence")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
                 Manufacturing Excellence
               </a>
             </li>
             <li>
-              <a href="#process" className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a href="/#process" onClick={(e) => handleQuickLink(e, "process")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
                 Our Weaving Process
               </a>
             </li>
             <li>
-              <a href="#testimonials" className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a href="/#testimonials" onClick={(e) => handleQuickLink(e, "testimonials")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
                 Client Testimonials
               </a>
             </li>

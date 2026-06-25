@@ -2,6 +2,9 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const connectDB = require("./config/db");
@@ -19,6 +22,65 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate Limiter Configurations
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300, // Limit each IP to 300 requests per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: "Too many requests from this IP, please try again after 15 minutes."
+  }
+});
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 15, // Limit each IP to 15 login attempts per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: "Too many login attempts. Please try again after 15 minutes."
+  }
+});
+
+const submitLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // Limit each IP to 10 form submissions per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: "Too many inquiries submitted from this IP. Please try again later."
+  }
+});
+
+// Mount Helmet for security headers (including Content Security Policy)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+        fontSrc: ["'self'", "fonts.gstatic.com"],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "*.cloudinary.com",
+          "images.unsplash.com"
+        ],
+        connectSrc: ["'self'", "*.cloudinary.com", "http://localhost:3000", "ws://localhost:5173", "http://localhost:5173"],
+        mediaSrc: ["'self'", "*.cloudinary.com"],
+        frameSrc: ["'self'", "www.google.com", "maps.google.com", "www.google.com/maps", "maps.google.co.in", "www.google.co.in"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  })
+);
+
+// Apply rate limiting globally to all API routes
+app.use("/api", apiLimiter);
 
 // CORS setup
 const allowedOrigins = [
@@ -45,8 +107,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Prevent NoSQL query injection
+app.use(mongoSanitize());
+
 // Serve uploads folder statically (local fallback upload storage)
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+// Apply specific rate limits to sensitive routes before mounting
+app.use("/api/auth/login", loginLimiter);
+app.use("/api/leads", (req, res, next) => {
+  if (req.method === "POST") {
+    return submitLimiter(req, res, next);
+  }
+  next();
+});
 
 // Mount API Routes
 app.use("/api/auth", authRoutes);
