@@ -7,6 +7,10 @@
     {
       "source": "/uploads/:path*",
       "destination": "https://florinaa-api.onrender.com/uploads/:path*"
+    },
+    {
+      "source": "/((?!assets/).*)",
+      "destination": "/index.html"
     }
   ]
 }
