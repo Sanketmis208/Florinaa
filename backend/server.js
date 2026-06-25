@@ -23,6 +23,9 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust first proxy (required for Render, Vercel, etc. — fixes rate-limiter IP detection)
+app.set("trust proxy", 1);
+
 // Rate Limiter Configurations
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
