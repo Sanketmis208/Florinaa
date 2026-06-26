@@ -41,7 +41,7 @@ Set `EMAIL_WEBHOOK_URL` to a webhook relay such as Make, Zapier, n8n, or a small
 
 ## Production notes
 
-- Replace placeholder Unsplash images and `public/catalogue-placeholder.pdf` with final brand assets.
+- Replace placeholder Unsplash images and `public/Florinaa_catalogue.pdf` with final brand assets.
 - Move `data/db.json` to MongoDB Atlas, PostgreSQL, or Supabase for multi-user production.
 - Move image/PDF storage to Cloudinary or S3-compatible storage.
 - Keep `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_JWT_SECRET` in deployment environment variables only.

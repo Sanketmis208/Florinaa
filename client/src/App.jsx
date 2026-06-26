@@ -39,8 +39,8 @@ const App = () => {
       // Trigger actual browser download
       // Default fallback path, will be updated to value from settings if fetched
       const link = document.createElement("a");
-      link.href = "/catalogue-placeholder.pdf";
-      link.download = "Florinaa_Exporters_Catalogue.pdf";
+      link.href = "/Florinaa_catalogue.pdf";
+      link.download = "Florinaa_catalogue.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
