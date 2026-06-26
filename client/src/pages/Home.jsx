@@ -734,36 +734,13 @@ const Home = ({ onDownloadCatalog }) => {
                             "Crafted using premium high-longevity yarn with special thermal traps for maximum winter isolation and breathability."}
                         </p>
 
-                        {/* Specs badges */}
-                        <div className="grid grid-cols-2 gap-3 max-w-md my-2">
-                          <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
-                            <span className="text-[10px] uppercase font-bold text-neutral-500">
-                              Weight GSM
-                            </span>
-                            <span className="text-sm font-semibold text-primary">
-                              {product.gsm}
-                            </span>
-                          </div>
-                          <div className="p-3 bg-secondary rounded-xl flex flex-col border border-accent/10">
-                            <span className="text-[10px] uppercase font-bold text-neutral-500">
-                              Dimensions
-                            </span>
-                            <span
-                              className="text-sm font-semibold text-primary truncate"
-                              title={product.dimensions}
-                            >
-                              {product.dimensions}
-                            </span>
-                          </div>
-                        </div>
-
                         <div className="flex items-center gap-4 mt-2">
                           <a
                             href="#inquiry"
                             onClick={() => {
                               setInquiryForm((prev) => ({
                                 ...prev,
-                                requirement: `Inquiry regarding: ${product.name} (${product.gsm}, ${product.dimensions})`,
+                                requirement: `Inquiry regarding: ${product.name} (${product.gsm})`,
                               }));
                             }}
                             className="px-6 py-3 rounded-full bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow-md text-center cursor-pointer"
@@ -785,13 +762,17 @@ const Home = ({ onDownloadCatalog }) => {
                 <div className="w-screen flex items-center justify-center text-neutral-500 font-light italic">
                   Loading products showcase...
                 </div>
-              )}
+              )
+            }
             </div>
           </div>
         </div>
       )}
 
-      {/* 5. FACTORY PROCESS TIMELINE */}
+
+
+
+      { /* 5. FACTORY PROCESS TIMELINE */ } 
       <section id="process" className="py-24 bg-secondary">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           {/* Section Header */}

@@ -183,7 +183,7 @@ function openProduct(id) {
         <h2>${product.name}</h2>
         <div class="spec-list">
           <div><span>GSM</span><strong>${product.gsm}</strong></div>
-          <div><span>Dimensions</span><strong>${product.dimensions}</strong></div>
+          // <div><span>Dimensions</span><strong>${product.dimensions}</strong></div>
           <div><span>Material</span><strong>${product.material}</strong></div>
         </div>
         <h3>Wash Care</h3>

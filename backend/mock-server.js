@@ -129,7 +129,7 @@ function normalizeProduct(input, existing = {}) {
     name: String(input.name || existing.name || "").trim(),
     category: String(input.category || existing.category || "").trim(),
     gsm: String(input.gsm || existing.gsm || "").trim(),
-    dimensions: String(input.dimensions || existing.dimensions || "").trim(),
+    // dimensions: String(input.dimensions || existing.dimensions || "").trim(),
     material: String(input.material || existing.material || "").trim(),
     washCare: Array.isArray(input.washCare) ? input.washCare : String(input.washCare || existing.washCare || "").split(",").map(v => v.trim()).filter(Boolean),
     images: Array.isArray(input.images) ? input.images : String(input.images || existing.images || "").split("\n").map(v => v.trim()).filter(Boolean),

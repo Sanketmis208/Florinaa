@@ -89,7 +89,7 @@ const runMigration = async () => {
         slug: prod.id,
         category: catObjectId,
         gsm: prod.gsm || "N/A",
-        dimensions: prod.dimensions || "N/A",
+        // dimensions: prod.dimensions || "N/A",
         material: prod.material || "",
         washCare: prod.washCare || [],
         images: prod.images || [],

@@ -43,9 +43,7 @@ const AdminDashboard = () => {
   const [productForm, setProductForm] = useState({
     name: "",
     category: "",
-    weight: "",
     gsm: "",
-    dimensions: "",
     material: "",
     washCare: "",
     images: "",
@@ -110,8 +108,8 @@ const AdminDashboard = () => {
     return (
       product.name?.toLowerCase().includes(searchLower) ||
       product.category?.name?.toLowerCase().includes(searchLower) ||
-      product.gsm?.toLowerCase().includes(searchLower) ||
-      product.dimensions?.toLowerCase().includes(searchLower)
+      product.gsm?.toLowerCase().includes(searchLower)
+      // product.dimensions?.toLowerCase().includes(searchLower)
     );
   });
 
@@ -265,8 +263,6 @@ const AdminDashboard = () => {
       name: "",
       category: categories?.[0]?._id || "",
       gsm: "",
-      weight: "",
-      dimensions: "",
       material: "",
       washCare: "Machine wash gentle, Do not bleach, Tumble dry low",
       images: "",
@@ -282,9 +278,7 @@ const AdminDashboard = () => {
     setProductForm({
       name: product.name || "",
       category: product.category?._id || product.category || "",
-      weight: product.weight || "",
       gsm: product.gsm || "",
-      dimensions: product.dimensions || "",
       material: product.material || "",
       washCare: Array.isArray(product.washCare)
         ? product.washCare.join(", ")
@@ -303,9 +297,9 @@ const AdminDashboard = () => {
     e.preventDefault();
     if (
       !productForm.category ||
-      !productForm.weight ||
-      !productForm.gsm ||
-      !productForm.dimensions
+      // !productForm.weight ||
+      !productForm.gsm
+      // !productForm.dimensions
     ) {
       setFormError("Please fill out all required fields.");
       return;
@@ -673,12 +667,12 @@ const AdminDashboard = () => {
                         <td className="py-3 px-6 font-mono text-xs">
                           {product.gsm}
                         </td>
-                        <td
+                        {/* <td
                           className="py-3 px-6 max-w-[150px] truncate text-xs"
                           title={product.dimensions}
                         >
                           {product.dimensions}
-                        </td>
+                        </td> */}
                         <td className="py-3 px-6 text-center">
                           {product.featured ? (
                             <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-dark text-[9px] font-bold uppercase tracking-wider">
@@ -1256,23 +1250,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
-                    Weight *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={productForm.weight}
-                    onChange={(e) =>
-                      setProductForm({ ...productForm, weight: e.target.value })
-                    }
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
-                    placeholder="1.5 kg"
-                  />
-                </div>
-
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
                     GSM *
@@ -1288,29 +1265,8 @@ const AdminDashboard = () => {
                     placeholder="420 GSM"
                   />
                 </div>
-              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
-                    Dimensions / Size *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={productForm.dimensions}
-                    onChange={(e) =>
-                      setProductForm({
-                        ...productForm,
-                        dimensions: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
-                    placeholder="60 x 90 inches"
-                  />
-                </div>
-
-                {/* Material Composition - temporarily disabled
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Material Composition</label>
                   <input
@@ -1321,9 +1277,9 @@ const AdminDashboard = () => {
                     placeholder="Ultra-soft polyester mink"
                   />
                 </div>
-                */}
+              
               </div>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">

@@ -54,9 +54,8 @@ const createProduct = async (req, res) => {
   const {
     name,
     category,
-    weight,
     gsm,
-    dimensions,
+    // dimensions,
     material,
     washCare,
     images,
@@ -65,7 +64,7 @@ const createProduct = async (req, res) => {
   } = req.body;
 
   try {
-    if (!category || !weight || !gsm || !dimensions) {
+    if (!category || !gsm) {
       return res
         .status(400)
         .json({ error: "Please provide all required fields" });
@@ -90,9 +89,7 @@ const createProduct = async (req, res) => {
       name: finalName,
       slug,
       category,
-      weight,
       gsm,
-      dimensions,
       material,
       washCare: Array.isArray(washCare)
         ? washCare
@@ -121,9 +118,8 @@ const updateProduct = async (req, res) => {
   const {
     name,
     category,
-    weight,
     gsm,
-    dimensions,
+    // dimensions,
     material,
     washCare,
     images,
@@ -149,9 +145,8 @@ const updateProduct = async (req, res) => {
       product.slug = slugify(product.name);
     }
     if (category) product.category = category;
-    if (weight) product.weight = weight;
     if (gsm) product.gsm = gsm;
-    if (dimensions) product.dimensions = dimensions;
+    // if (dimensions) product.dimensions = dimensions;
     if (material !== undefined) product.material = material;
     if (washCare !== undefined) {
       product.washCare = Array.isArray(washCare)

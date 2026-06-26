@@ -57,8 +57,7 @@
       "name": "Royale Mink Blanket",
       "category": "blankets",
       "gsm": "420 GSM",
-      "dimensions": "60 x 90 inches",
-      "material": "Ultra-soft polyester mink",
+      "material": "Ultra-soft",
       "washCare": [
         "Gentle machine wash",
         "Do not bleach",
@@ -75,7 +74,6 @@
       "name": "Saanjh Cotton Dohar",
       "category": "dohar",
       "gsm": "180 GSM",
-      "dimensions": "90 x 100 inches",
       "material": "Cotton blend outer with airy filling",
       "washCare": [
         "Cold wash",
@@ -93,7 +91,6 @@
       "name": "Hoteluxe Fitted Sheet",
       "category": "fitted-sheets",
       "gsm": "155 GSM",
-      "dimensions": "72 x 78 x 10 inches",
       "material": "Combed cotton rich fabric",
       "washCare": [
         "Machine wash",
@@ -111,7 +108,6 @@
       "name": "Cloudloft Quilt",
       "category": "quilts",
       "gsm": "300 GSM",
-      "dimensions": "90 x 108 inches",
       "material": "Microfiber shell with hollow siliconized filling",
       "washCare": [
         "Dry clean preferred",
@@ -129,7 +125,6 @@
       "name": "Signature Bed Sheet Set",
       "category": "bed-sheets",
       "gsm": "145 GSM",
-      "dimensions": "King 108 x 108 inches + 2 pillow covers",
       "material": "Premium cotton blend",
       "washCare": [
         "Machine wash cold",
@@ -147,7 +142,6 @@
       "name": "Heritage Flano Carpet",
       "category": "flano-carpets",
       "gsm": "650 GSM",
-      "dimensions": "5 x 7 feet",
       "material": "Dense flano pile with anti-skid backing",
       "washCare": [
         "Vacuum regularly",
@@ -165,7 +159,6 @@
       "name": "Spa Flano Bath Mat",
       "category": "flano-bath-mats",
       "gsm": "520 GSM",
-      "dimensions": "20 x 32 inches",
       "material": "Absorbent flano face with anti-skid base",
       "washCare": [
         "Machine wash gentle",
@@ -183,7 +176,6 @@
       "name": "Accent Flano Rug",
       "category": "flano-rugs",
       "gsm": "600 GSM",
-      "dimensions": "3 x 5 feet",
       "material": "Soft flano surface with reinforced edges",
       "washCare": [
         "Shake dust out",

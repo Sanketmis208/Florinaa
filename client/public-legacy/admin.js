@@ -112,7 +112,7 @@ function fillProductForm(product) {
   fields.name.value = product?.name || "";
   fields.category.value = product?.category || db.categories[0]?.id || "";
   fields.gsm.value = product?.gsm || "";
-  fields.dimensions.value = product?.dimensions || "";
+  // fields.dimensions.value = product?.dimensions || "";
   fields.material.value = product?.material || "";
   fields.washCare.value = (product?.washCare || []).join(", ");
   fields.images.value = (product?.images || []).join("\n");
@@ -236,7 +236,7 @@ function setupEvents() {
       name: fields.name.value,
       category: fields.category.value,
       gsm: fields.gsm.value,
-      dimensions: fields.dimensions.value,
+      // dimensions: fields.dimensions.value,
       material: fields.material.value,
       washCare: fields.washCare.value,
       images: fields.images.value,

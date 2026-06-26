@@ -360,7 +360,7 @@ const Products = () => {
                     */}
 
                     {/* Key Specs */}
-                    <div className="flex items-center gap-4 mt-3 text-xs text-neutral-500">
+                    {/* <div className="flex items-center gap-4 mt-3 text-xs text-neutral-500">
                       <div>
                         <span className="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide">
                           Weight
@@ -381,7 +381,7 @@ const Products = () => {
                           {product.dimensions}
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between">
@@ -469,28 +469,20 @@ const Products = () => {
                 <div className="space-y-3 bg-secondary/50 p-4 rounded-xl border border-accent/10 text-sm text-neutral-700">
                   <div className="flex justify-between border-b border-neutral-200/50 pb-2">
                     <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
-                      Weight
-                    </span>
-                    <span className="font-medium text-primary">
-                      {selectedProduct.weight}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-b border-neutral-200/50 pb-2">
-                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
                       GSM
                     </span>
                     <span className="font-medium text-primary">
                       {selectedProduct.gsm}
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-neutral-200/50 pb-2">
+                  {/* <div className="flex justify-between border-b border-neutral-200/50 pb-2">
                     <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
                       Dimensions
                     </span>
                     <span className="font-medium text-primary">
                       {selectedProduct.dimensions}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex justify-between border-b border-neutral-200/50 pb-2">
                     <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
                       Material
