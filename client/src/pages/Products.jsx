@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { 
-  Filter, 
-  Search, 
-  ArrowUpDown, 
-  X, 
-  Info, 
-  Check, 
+import {
+  Filter,
+  Search,
+  ArrowUpDown,
+  X,
+  Info,
+  Check,
   MessageSquare,
   Sparkles,
   ArrowRight,
   Download,
   AlertCircle,
   FileText,
-  ChevronDown
+  ChevronDown,
 } from "lucide-react";
 import { productsAPI, categoriesAPI, leadsAPI } from "../services/api";
 
@@ -25,7 +25,8 @@ const TiltCard = ({ children, className, onClick }) => {
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
-    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    const { left, top, width, height } =
+      cardRef.current.getBoundingClientRect();
     const x = (e.clientX - left) / width - 0.5; // [-0.5, 0.5]
     const y = (e.clientY - top) / height - 0.5; // [-0.5, 0.5]
     setCoords({ x, y });
@@ -41,9 +42,9 @@ const TiltCard = ({ children, className, onClick }) => {
   };
 
   const rotateX = isHovered ? -coords.y * 15 : 0; // max 15 deg tilt
-  const rotateY = isHovered ? coords.x * 15 : 0;  // max 15 deg tilt
+  const rotateY = isHovered ? coords.x * 15 : 0; // max 15 deg tilt
   const scale = isHovered ? 1.02 : 1.0;
-  const shadow = isHovered 
+  const shadow = isHovered
     ? "0 20px 40px rgba(200, 169, 126, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)"
     : "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)";
 
@@ -61,7 +62,10 @@ const TiltCard = ({ children, className, onClick }) => {
         transformStyle: "preserve-3d",
       }}
     >
-      <div style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }} className="h-full flex flex-col justify-between">
+      <div
+        style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
+        className="h-full flex flex-col justify-between"
+      >
         {children}
       </div>
     </div>
@@ -70,19 +74,24 @@ const TiltCard = ({ children, className, onClick }) => {
 
 const Products = () => {
   const location = useLocation();
-  
+
   // Search & Filters State
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
-  
+
   // Detail Modal State
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
   // Quote Form State
-  const [quoteForm, setQuoteForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [quoteForm, setQuoteForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
   const [quoteSuccess, setQuoteSuccess] = useState(false);
   const [quoteError, setQuoteError] = useState("");
 
@@ -96,7 +105,11 @@ const Products = () => {
   }, [location.search]);
 
   // Fetch products and categories
-  const { data: products, isLoading: productsLoading, error: productsError } = useQuery({
+  const {
+    data: products,
+    isLoading: productsLoading,
+    error: productsError,
+  } = useQuery({
     queryKey: ["products"],
     queryFn: productsAPI.getAll,
   });
@@ -112,15 +125,15 @@ const Products = () => {
     onSuccess: (data, variables) => {
       setQuoteSuccess(true);
       setQuoteError("");
-      
+
       // Redirect to WhatsApp
       const name = variables.name || "";
       const email = variables.email || "";
       const phone = variables.phone || "";
       const requirement = variables.requirement || "";
-      
+
       const whatsappText = `Hello, I've submitted a product price inquiry:\n\n*Customer Name:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n\n*Inquiry Details:*\n${requirement}`;
-      const whatsappUrl = `https://wa.me/919879619815?text=${encodeURIComponent(whatsappText)}`;
+      const whatsappUrl = `https://wa.me/919896915012?text=${encodeURIComponent(whatsappText)}`;
       window.open(whatsappUrl, "_blank");
 
       setQuoteForm({ name: "", email: "", phone: "", message: "" });
@@ -137,10 +150,14 @@ const Products = () => {
   const filteredProducts = products
     ? products.filter((product) => {
         const matchesVisibility = product.visible !== false;
-        const matchesCategory = selectedCategory === "all" || product.category?.slug === selectedCategory;
-        const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        const matchesCategory =
+          selectedCategory === "all" ||
+          product.category?.slug === selectedCategory;
+        const matchesSearch =
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           product.gsm.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (product.material && product.material.toLowerCase().includes(searchTerm.toLowerCase()));
+          (product.material &&
+            product.material.toLowerCase().includes(searchTerm.toLowerCase()));
         return matchesVisibility && matchesCategory && matchesSearch;
       })
     : [];
@@ -202,7 +219,9 @@ const Products = () => {
           </h1>
           <div className="w-16 h-[1.5px] bg-accent mx-auto my-5" />
           <p className="text-neutral-600 text-sm leading-relaxed">
-            Browse our catalog of blankets, sheets, quilts, and soft floor textiles. Click any product to view its technical specifications and request wholesale pricing.
+            Browse our catalog of blankets, sheets, quilts, and soft floor
+            textiles. Click any product to view its technical specifications and
+            request wholesale pricing.
           </p>
         </div>
 
@@ -211,7 +230,10 @@ const Products = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Search Box */}
             <div className="relative w-full md:w-80 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors" size={18} />
+              <Search
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors"
+                size={18}
+              />
               <input
                 type="text"
                 placeholder="Search blankets, materials..."
@@ -220,10 +242,13 @@ const Products = () => {
                 className="w-full pl-11 pr-4 py-2.5 rounded-full border border-neutral-300 hover:border-neutral-400 focus:border-accent focus:ring-1 focus:ring-accent bg-secondary/20 focus:bg-white text-sm focus:outline-none transition-all duration-300"
               />
             </div>
-            
+
             {/* Sorter */}
             <div className="relative w-full md:w-48 group">
-              <ArrowUpDown className="absolute left-4 top-1/2 -translate-y-1/2 text-accent pointer-events-none group-hover:text-accent-dark transition-colors" size={14} />
+              <ArrowUpDown
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-accent pointer-events-none group-hover:text-accent-dark transition-colors"
+                size={14}
+              />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -235,7 +260,10 @@ const Products = () => {
                 <option value="gsm-desc">Highest GSM First</option>
                 <option value="gsm-asc">Lowest GSM First</option>
               </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none group-hover:text-neutral-500 transition-colors" size={14} />
+              <ChevronDown
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none group-hover:text-neutral-500 transition-colors"
+                size={14}
+              />
             </div>
           </div>
 
@@ -273,7 +301,9 @@ const Products = () => {
         {productsLoading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4">
             <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-            <span className="text-neutral-500 font-light italic">Loading Florinaa collection...</span>
+            <span className="text-neutral-500 font-light italic">
+              Loading Florinaa collection...
+            </span>
           </div>
         ) : productsError ? (
           <div className="flex items-center gap-3 justify-center py-20 text-red-500">
@@ -283,8 +313,12 @@ const Products = () => {
         ) : sortedProducts.length === 0 ? (
           <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-neutral-300">
             <Info className="mx-auto text-neutral-400 mb-3" size={32} />
-            <h3 className="font-serif text-xl font-medium text-neutral-600">No Products Found</h3>
-            <p className="text-neutral-400 text-sm mt-1">Try resetting your search query or category filters.</p>
+            <h3 className="font-serif text-xl font-medium text-neutral-600">
+              No Products Found
+            </h3>
+            <p className="text-neutral-400 text-sm mt-1">
+              Try resetting your search query or category filters.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -297,7 +331,10 @@ const Products = () => {
                 {/* Product Image */}
                 <div className="h-64 overflow-hidden relative bg-neutral-100">
                   <img
-                    src={product.images?.[0] || "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=85"}
+                    src={
+                      product.images?.[0] ||
+                      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=85"
+                    }
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -314,30 +351,41 @@ const Products = () => {
                     <span className="text-[10px] uppercase font-bold text-accent tracking-wider block mb-1">
                       {product.category?.name || "Blankets"}
                     </span>
+                    {/* Product name hidden on website for now - still saved in DB
                     <h3
                       className="font-serif text-lg font-medium text-primary hover:text-accent transition-colors line-clamp-1"
                     >
                       {product.name}
                     </h3>
-                    
+                    */}
+
                     {/* Key Specs */}
                     <div className="flex items-center gap-4 mt-3 text-xs text-neutral-500">
                       <div>
-                        <span className="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide">Weight</span>
-                        <span className="font-semibold text-neutral-700">{product.gsm}</span>
+                        <span className="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide">
+                          Weight
+                        </span>
+                        <span className="font-semibold text-neutral-700">
+                          {product.weight}
+                        </span>
                       </div>
                       <div className="border-l border-neutral-200 h-6" />
                       <div className="max-w-[120px] truncate">
-                        <span className="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide">Size</span>
-                        <span className="font-semibold text-neutral-700 truncate block" title={product.dimensions}>{product.dimensions}</span>
+                        <span className="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide">
+                          Size
+                        </span>
+                        <span
+                          className="font-semibold text-neutral-700 truncate block"
+                          title={product.dimensions}
+                        >
+                          {product.dimensions}
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <span
-                      className="text-xs uppercase tracking-widest font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1"
-                    >
+                    <span className="text-xs uppercase tracking-widest font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1">
                       Specifications <ArrowRight size={12} />
                     </span>
                   </div>
@@ -369,28 +417,38 @@ const Products = () => {
               <div className="lg:col-span-6 flex flex-col gap-4">
                 <div className="h-[380px] md:h-[480px] rounded-2xl overflow-hidden bg-secondary/30 border border-accent/15 flex items-center justify-center p-2">
                   <img
-                    src={selectedProduct.images?.[activeImageIdx] || "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=85"}
+                    src={
+                      selectedProduct.images?.[activeImageIdx] ||
+                      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=85"
+                    }
                     alt={selectedProduct.name}
                     className="w-full h-full object-contain"
                   />
                 </div>
 
                 {/* Thumbnails */}
-                {selectedProduct.images && selectedProduct.images.length > 1 && (
-                  <div className="flex items-center gap-2 overflow-x-auto py-1">
-                    {selectedProduct.images.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveImageIdx(idx)}
-                        className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 cursor-pointer ${
-                          idx === activeImageIdx ? "border-accent" : "border-neutral-200 hover:border-accent/40"
-                        }`}
-                      >
-                        <img src={img} alt="" className="w-full h-full object-cover" />
-                      </button>
-                    ))}
-                  </div>
-                )}
+                {selectedProduct.images &&
+                  selectedProduct.images.length > 1 && (
+                    <div className="flex items-center gap-2 overflow-x-auto py-1">
+                      {selectedProduct.images.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setActiveImageIdx(idx)}
+                          className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 cursor-pointer ${
+                            idx === activeImageIdx
+                              ? "border-accent"
+                              : "border-neutral-200 hover:border-accent/40"
+                          }`}
+                        >
+                          <img
+                            src={img}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
               </div>
 
               {/* Right Column - Product Specs & Inquiry Form */}
@@ -399,39 +457,64 @@ const Products = () => {
                   <span className="text-xs uppercase font-bold text-accent tracking-wider">
                     {selectedProduct.category?.name || "Blankets Collection"}
                   </span>
+                  {/* Product name hidden on website for now - still saved in DB
                   <h2 className="heading-luxury text-3xl text-primary font-medium mt-1">
                     {selectedProduct.name}
                   </h2>
+                  */}
                   <div className="w-12 h-[1px] bg-accent my-3" />
                 </div>
 
                 {/* Specs list */}
                 <div className="space-y-3 bg-secondary/50 p-4 rounded-xl border border-accent/10 text-sm text-neutral-700">
                   <div className="flex justify-between border-b border-neutral-200/50 pb-2">
-                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">Weight (GSM)</span>
-                    <span className="font-medium text-primary">{selectedProduct.gsm}</span>
+                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
+                      Weight
+                    </span>
+                    <span className="font-medium text-primary">
+                      {selectedProduct.weight}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-neutral-200/50 pb-2">
-                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">Dimensions</span>
-                    <span className="font-medium text-primary">{selectedProduct.dimensions}</span>
+                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
+                      GSM
+                    </span>
+                    <span className="font-medium text-primary">
+                      {selectedProduct.gsm}
+                    </span>
                   </div>
                   <div className="flex justify-between border-b border-neutral-200/50 pb-2">
-                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">Material</span>
-                    <span className="font-medium text-primary">{selectedProduct.material || "Microfiber Soft Blend"}</span>
+                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
+                      Dimensions
+                    </span>
+                    <span className="font-medium text-primary">
+                      {selectedProduct.dimensions}
+                    </span>
                   </div>
-                  {selectedProduct.washCare && selectedProduct.washCare.length > 0 && (
-                    <div className="flex flex-col gap-1.5 pt-1">
-                      <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">Wash & Care</span>
-                      <ul className="grid grid-cols-2 gap-1 text-[11px] text-neutral-600 pl-1">
-                        {selectedProduct.washCare.map((item, idx) => (
-                          <li key={idx} className="flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                            <span className="truncate">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  <div className="flex justify-between border-b border-neutral-200/50 pb-2">
+                    <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
+                      Material
+                    </span>
+                    <span className="font-medium text-primary">
+                      {selectedProduct.material || "Microfiber Soft Blend"}
+                    </span>
+                  </div>
+                  {selectedProduct.washCare &&
+                    selectedProduct.washCare.length > 0 && (
+                      <div className="flex flex-col gap-1.5 pt-1">
+                        <span className="font-semibold text-neutral-500 uppercase text-[10px] tracking-wider">
+                          Wash & Care
+                        </span>
+                        <ul className="grid grid-cols-2 gap-1 text-[11px] text-neutral-600 pl-1">
+                          {selectedProduct.washCare.map((item, idx) => (
+                            <li key={idx} className="flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                              <span className="truncate">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                 </div>
 
                 {/* Instant Quote Box */}
@@ -446,8 +529,12 @@ const Products = () => {
                       <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-2">
                         <Check className="text-emerald-600" size={20} />
                       </div>
-                      <span className="text-xs font-semibold text-emerald-700 block">Pricing request sent successfully!</span>
-                      <span className="text-[10px] text-neutral-400 mt-1 block">Panipat desk will contact you.</span>
+                      <span className="text-xs font-semibold text-emerald-700 block">
+                        Pricing request sent successfully!
+                      </span>
+                      <span className="text-[10px] text-neutral-400 mt-1 block">
+                        Panipat desk will contact you.
+                      </span>
                     </div>
                   ) : (
                     <form onSubmit={handleQuoteSubmit} className="space-y-3">
@@ -456,14 +543,16 @@ const Products = () => {
                           {quoteError}
                         </div>
                       )}
-                      
+
                       <div className="grid grid-cols-2 gap-2">
                         <input
                           type="text"
                           required
                           placeholder="Your Name"
                           value={quoteForm.name}
-                          onChange={(e) => setQuoteForm({ ...quoteForm, name: e.target.value })}
+                          onChange={(e) =>
+                            setQuoteForm({ ...quoteForm, name: e.target.value })
+                          }
                           className="w-full px-3 py-2 rounded-lg border border-neutral-300 bg-white text-xs focus:border-accent focus:outline-none transition-colors"
                         />
                         <input
@@ -471,17 +560,24 @@ const Products = () => {
                           required
                           placeholder="Phone Number"
                           value={quoteForm.phone}
-                          onChange={(e) => setQuoteForm({ ...quoteForm, phone: e.target.value })}
+                          onChange={(e) =>
+                            setQuoteForm({
+                              ...quoteForm,
+                              phone: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 rounded-lg border border-neutral-300 bg-white text-xs focus:border-accent focus:outline-none transition-colors"
                         />
                       </div>
-                      
+
                       <input
                         type="email"
                         required
                         placeholder="Email Address"
                         value={quoteForm.email}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, email: e.target.value })}
+                        onChange={(e) =>
+                          setQuoteForm({ ...quoteForm, email: e.target.value })
+                        }
                         className="w-full px-3 py-2 rounded-lg border border-neutral-300 bg-white text-xs focus:border-accent focus:outline-none transition-colors"
                       />
 
@@ -489,7 +585,12 @@ const Products = () => {
                         type="text"
                         placeholder="Notes (quantity, destination port, customization)"
                         value={quoteForm.message}
-                        onChange={(e) => setQuoteForm({ ...quoteForm, message: e.target.value })}
+                        onChange={(e) =>
+                          setQuoteForm({
+                            ...quoteForm,
+                            message: e.target.value,
+                          })
+                        }
                         className="w-full px-3 py-2 rounded-lg border border-neutral-300 bg-white text-xs focus:border-accent focus:outline-none transition-colors"
                       />
 
@@ -498,7 +599,9 @@ const Products = () => {
                         disabled={quoteMutation.isPending}
                         className="w-full py-2.5 rounded-lg bg-primary hover:bg-neutral-900 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow disabled:bg-neutral-400 cursor-pointer"
                       >
-                        {quoteMutation.isPending ? "Submitting Inquiry..." : "Send Price Inquiry"}
+                        {quoteMutation.isPending
+                          ? "Submitting Inquiry..."
+                          : "Send Price Inquiry"}
                       </button>
                     </form>
                   )}

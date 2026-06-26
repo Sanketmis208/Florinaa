@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { 
-  LayoutDashboard, 
-  FolderTree, 
-  ShoppingBag, 
-  Users, 
-  Settings, 
-  Upload, 
-  LogOut, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Download, 
+import {
+  LayoutDashboard,
+  FolderTree,
+  ShoppingBag,
+  Users,
+  Settings,
+  Upload,
+  LogOut,
+  Plus,
+  Edit,
+  Trash2,
+  Download,
   ExternalLink,
   CheckCircle,
   FileSpreadsheet,
@@ -21,15 +21,15 @@ import {
   EyeOff,
   AlertCircle,
   X,
-  Search
+  Search,
 } from "lucide-react";
-import { 
-  authAPI, 
-  productsAPI, 
-  categoriesAPI, 
-  leadsAPI, 
-  contentAPI, 
-  uploadAPI 
+import {
+  authAPI,
+  productsAPI,
+  categoriesAPI,
+  leadsAPI,
+  contentAPI,
+  uploadAPI,
 } from "../services/api";
 
 const AdminDashboard = () => {
@@ -41,7 +41,16 @@ const AdminDashboard = () => {
   const [productModalOpen, setProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null); // null means adding new
   const [productForm, setProductForm] = useState({
-    name: "", category: "", gsm: "", dimensions: "", material: "", washCare: "", images: "", featured: false, visible: true
+    name: "",
+    category: "",
+    weight: "",
+    gsm: "",
+    dimensions: "",
+    material: "",
+    washCare: "",
+    images: "",
+    featured: false,
+    visible: true,
   });
 
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -88,7 +97,11 @@ const AdminDashboard = () => {
 
   // Settings State Form
   const [settingsForm, setSettingsForm] = useState({
-    heroTitle: "", heroSubtitle: "", heroImage: "", catalogueUrl: "", aboutText: ""
+    heroTitle: "",
+    heroSubtitle: "",
+    heroImage: "",
+    catalogueUrl: "",
+    aboutText: "",
   });
 
   // Filter products by search input
@@ -138,7 +151,8 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries(["products"]);
       setProductModalOpen(false);
     },
-    onError: (err) => setFormError(err.response?.data?.error || "Failed to create product"),
+    onError: (err) =>
+      setFormError(err.response?.data?.error || "Failed to create product"),
   });
 
   const productUpdateMutation = useMutation({
@@ -148,7 +162,8 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries(["products"]);
       setProductModalOpen(false);
     },
-    onError: (err) => setFormError(err.response?.data?.error || "Failed to update product"),
+    onError: (err) =>
+      setFormError(err.response?.data?.error || "Failed to update product"),
   });
 
   const productDeleteMutation = useMutation({
@@ -167,7 +182,8 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries(["categories"]);
       setCategoryModalOpen(false);
     },
-    onError: (err) => setFormError(err.response?.data?.error || "Failed to create category"),
+    onError: (err) =>
+      setFormError(err.response?.data?.error || "Failed to create category"),
   });
 
   const categoryUpdateMutation = useMutation({
@@ -177,7 +193,8 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries(["categories"]);
       setCategoryModalOpen(false);
     },
-    onError: (err) => setFormError(err.response?.data?.error || "Failed to update category"),
+    onError: (err) =>
+      setFormError(err.response?.data?.error || "Failed to update category"),
   });
 
   const categoryDeleteMutation = useMutation({
@@ -186,7 +203,8 @@ const AdminDashboard = () => {
       queryClient.invalidateQueries(["categories-admin"]);
       queryClient.invalidateQueries(["categories"]);
     },
-    onError: (err) => alert(err.response?.data?.error || "Failed to delete category"),
+    onError: (err) =>
+      alert(err.response?.data?.error || "Failed to delete category"),
   });
 
   // Leads Mutation
@@ -214,9 +232,9 @@ const AdminDashboard = () => {
     try {
       const res = await uploadAPI.uploadFile(file);
       // Append URL
-      setProductForm(prev => ({
+      setProductForm((prev) => ({
         ...prev,
-        images: prev.images ? `${prev.images}\n${res.url}` : res.url
+        images: prev.images ? `${prev.images}\n${res.url}` : res.url,
       }));
     } catch (err) {
       alert("Image upload failed");
@@ -247,6 +265,7 @@ const AdminDashboard = () => {
       name: "",
       category: categories?.[0]?._id || "",
       gsm: "",
+      weight: "",
       dimensions: "",
       material: "",
       washCare: "Machine wash gentle, Do not bleach, Tumble dry low",
@@ -263,11 +282,16 @@ const AdminDashboard = () => {
     setProductForm({
       name: product.name || "",
       category: product.category?._id || product.category || "",
+      weight: product.weight || "",
       gsm: product.gsm || "",
       dimensions: product.dimensions || "",
       material: product.material || "",
-      washCare: Array.isArray(product.washCare) ? product.washCare.join(", ") : product.washCare || "",
-      images: Array.isArray(product.images) ? product.images.join("\n") : product.images || "",
+      washCare: Array.isArray(product.washCare)
+        ? product.washCare.join(", ")
+        : product.washCare || "",
+      images: Array.isArray(product.images)
+        ? product.images.join("\n")
+        : product.images || "",
       featured: product.featured || false,
       visible: product.visible !== false,
     });
@@ -277,15 +301,26 @@ const AdminDashboard = () => {
 
   const handleProductSubmit = (e) => {
     e.preventDefault();
-    if (!productForm.name || !productForm.category || !productForm.gsm || !productForm.dimensions) {
+    if (
+      !productForm.category ||
+      !productForm.weight ||
+      !productForm.gsm ||
+      !productForm.dimensions
+    ) {
       setFormError("Please fill out all required fields.");
       return;
     }
 
     const payload = {
       ...productForm,
-      images: productForm.images.split("\n").map(u => u.trim()).filter(Boolean),
-      washCare: productForm.washCare.split(",").map(w => w.trim()).filter(Boolean),
+      images: productForm.images
+        .split("\n")
+        .map((u) => u.trim())
+        .filter(Boolean),
+      washCare: productForm.washCare
+        .split(",")
+        .map((w) => w.trim())
+        .filter(Boolean),
     };
 
     if (editingProduct) {
@@ -316,7 +351,10 @@ const AdminDashboard = () => {
       return;
     }
     if (editingCategory) {
-      categoryUpdateMutation.mutate({ id: editingCategory._id, data: categoryForm });
+      categoryUpdateMutation.mutate({
+        id: editingCategory._id,
+        data: categoryForm,
+      });
     } else {
       categoryCreateMutation.mutate(categoryForm);
     }
@@ -349,8 +387,14 @@ const AdminDashboard = () => {
       {/* Sidebar Navigation */}
       <aside className="w-64 bg-primary text-secondary/70 flex flex-col border-r border-[rgba(200,169,126,0.15)] shrink-0 hidden md:flex">
         <div className="p-6 border-b border-secondary/10 flex flex-col items-center justify-center gap-3.5 text-center">
-          <img src="/FLORINAA_Logo_Transparent.png" alt="" className="h-[58px] w-auto brightness-0 invert" />
-          <span className="font-serif text-[15px] uppercase tracking-[0.25em] font-bold text-accent mt-1">Admin Panel</span>
+          <img
+            src="/FLORINAA_Logo_Transparent.png"
+            alt=""
+            className="h-[58px] w-auto brightness-0 invert"
+          />
+          <span className="font-serif text-[15px] uppercase tracking-[0.25em] font-bold text-accent mt-1">
+            Admin Panel
+          </span>
         </div>
         <nav className="flex-grow p-4 space-y-1.5">
           {sidebarLinks.map((link) => {
@@ -366,7 +410,10 @@ const AdminDashboard = () => {
                     : "text-secondary/60 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <Icon size={16} className={isActive ? "text-primary" : "text-accent/60"} />
+                <Icon
+                  size={16}
+                  className={isActive ? "text-primary" : "text-accent/60"}
+                />
                 {link.label}
               </button>
             );
@@ -392,8 +439,10 @@ const AdminDashboard = () => {
             onChange={(e) => setActiveTab(e.target.value)}
             className="px-3 py-2 rounded-xl border border-neutral-200 font-serif text-sm focus:outline-none bg-secondary/50 cursor-pointer"
           >
-            {sidebarLinks.map(l => (
-              <option key={l.id} value={l.id}>{l.label}</option>
+            {sidebarLinks.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.label}
+              </option>
             ))}
           </select>
           <button
@@ -408,21 +457,40 @@ const AdminDashboard = () => {
         {activeTab === "overview" && (
           <div className="space-y-8 text-left">
             <div>
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Overview Dashboard</h2>
-              <p className="text-neutral-400 text-xs mt-1">Real-time statistics and latest wholesale activity.</p>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">
+                Overview Dashboard
+              </h2>
+              <p className="text-neutral-400 text-xs mt-1">
+                Real-time statistics and latest wholesale activity.
+              </p>
             </div>
-            
+
             {/* Stats Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { label: "Total Products", value: products?.length || 0 },
                 { label: "Categories", value: categories?.length || 0 },
-                { label: "Inquiry Leads", value: leads?.filter(l => l.type === "inquiry").length || 0 },
-                { label: "Catalog Downloads", value: leads?.filter(l => l.type === "catalogue-download").length || 0 },
+                {
+                  label: "Inquiry Leads",
+                  value: leads?.filter((l) => l.type === "inquiry").length || 0,
+                },
+                {
+                  label: "Catalog Downloads",
+                  value:
+                    leads?.filter((l) => l.type === "catalogue-download")
+                      .length || 0,
+                },
               ].map((stat, idx) => (
-                <div key={idx} className="bg-white p-6 rounded-2xl border border-accent/15 hover:border-accent/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(200,169,126,0.08)] transition-all duration-300 flex flex-col gap-2 group hover:-translate-y-0.5">
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest group-hover:text-accent transition-colors">{stat.label}</span>
-                  <span className="text-3xl font-serif font-bold text-primary">{stat.value}</span>
+                <div
+                  key={idx}
+                  className="bg-white p-6 rounded-2xl border border-accent/15 hover:border-accent/30 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_10px_30px_rgba(200,169,126,0.08)] transition-all duration-300 flex flex-col gap-2 group hover:-translate-y-0.5"
+                >
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest group-hover:text-accent transition-colors">
+                    {stat.label}
+                  </span>
+                  <span className="text-3xl font-serif font-bold text-primary">
+                    {stat.value}
+                  </span>
                 </div>
               ))}
             </div>
@@ -431,8 +499,13 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-accent/10 p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="font-serif text-lg font-medium text-primary">Recent Wholesale Leads</h3>
-                  <p className="text-neutral-400 text-xs mt-0.5">The latest inquiries generated from your public website forms.</p>
+                  <h3 className="font-serif text-lg font-medium text-primary">
+                    Recent Wholesale Leads
+                  </h3>
+                  <p className="text-neutral-400 text-xs mt-0.5">
+                    The latest inquiries generated from your public website
+                    forms.
+                  </p>
                 </div>
                 <button
                   onClick={() => setActiveTab("leads")}
@@ -445,36 +518,62 @@ const AdminDashboard = () => {
                 <table className="w-full text-sm text-neutral-600 text-left">
                   <thead>
                     <tr className="border-b border-neutral-100 text-[10px] uppercase text-neutral-400 font-bold tracking-wider">
-                      <th className="py-4 px-6 bg-neutral-50/50 rounded-l-xl">Contact</th>
+                      <th className="py-4 px-6 bg-neutral-50/50 rounded-l-xl">
+                        Contact
+                      </th>
                       <th className="py-4 px-6 bg-neutral-50/50">Company</th>
                       <th className="py-4 px-6 bg-neutral-50/50">Lead Type</th>
-                      <th className="py-4 px-6 bg-neutral-50/50">Phone / Email</th>
-                      <th className="py-4 px-6 bg-neutral-50/50 text-center rounded-r-xl">Status</th>
+                      <th className="py-4 px-6 bg-neutral-50/50">
+                        Phone / Email
+                      </th>
+                      <th className="py-4 px-6 bg-neutral-50/50 text-center rounded-r-xl">
+                        Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {leads?.slice(0, 5).map((lead) => (
-                      <tr key={lead._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
-                        <td className="py-4 px-6 font-semibold text-primary">{lead.name}</td>
-                        <td className="py-4 px-6">{lead.companyName || "Personal"}</td>
+                      <tr
+                        key={lead._id}
+                        className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors"
+                      >
+                        <td className="py-4 px-6 font-semibold text-primary">
+                          {lead.name}
+                        </td>
                         <td className="py-4 px-6">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
-                            lead.type === "catalogue-download" ? "bg-accent/15 text-accent-dark" : "bg-blue-50 text-blue-600"
-                          }`}>
-                            {lead.type === "catalogue-download" ? "Catalogue" : "Quote Request"}
+                          {lead.companyName || "Personal"}
+                        </td>
+                        <td className="py-4 px-6">
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
+                              lead.type === "catalogue-download"
+                                ? "bg-accent/15 text-accent-dark"
+                                : "bg-blue-50 text-blue-600"
+                            }`}
+                          >
+                            {lead.type === "catalogue-download"
+                              ? "Catalogue"
+                              : "Quote Request"}
                           </span>
                         </td>
                         <td className="py-4 px-6 text-xs">
                           <div className="font-medium">{lead.phone}</div>
-                          <div className="text-neutral-400 mt-0.5">{lead.email}</div>
+                          <div className="text-neutral-400 mt-0.5">
+                            {lead.email}
+                          </div>
                         </td>
                         <td className="py-4 px-6 text-center">
-                          <span className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
-                            lead.status === "new" ? "bg-red-50 text-red-600 border border-red-100" :
-                            lead.status === "contacted" ? "bg-amber-50 text-amber-600 border border-amber-100" :
-                            lead.status === "responded" ? "bg-blue-50 text-blue-600 border border-blue-100" :
-                            "bg-emerald-50 text-emerald-600 border border-emerald-100"
-                          }`}>
+                          <span
+                            className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
+                              lead.status === "new"
+                                ? "bg-red-50 text-red-600 border border-red-100"
+                                : lead.status === "contacted"
+                                  ? "bg-amber-50 text-amber-600 border border-amber-100"
+                                  : lead.status === "responded"
+                                    ? "bg-blue-50 text-blue-600 border border-blue-100"
+                                    : "bg-emerald-50 text-emerald-600 border border-emerald-100"
+                            }`}
+                          >
                             {lead.status}
                           </span>
                         </td>
@@ -482,7 +581,12 @@ const AdminDashboard = () => {
                     ))}
                     {(!leads || leads.length === 0) && (
                       <tr>
-                        <td colSpan={5} className="text-center py-8 text-neutral-400 italic">No wholesale leads found.</td>
+                        <td
+                          colSpan={5}
+                          className="text-center py-8 text-neutral-400 italic"
+                        >
+                          No wholesale leads found.
+                        </td>
                       </tr>
                     )}
                   </tbody>
@@ -497,8 +601,13 @@ const AdminDashboard = () => {
           <div className="space-y-6 text-left">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Products</h2>
-                <p className="text-neutral-400 text-xs mt-1">Create, update, or temporarily hide wholesale product listings.</p>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">
+                  Manage Products
+                </h2>
+                <p className="text-neutral-400 text-xs mt-1">
+                  Create, update, or temporarily hide wholesale product
+                  listings.
+                </p>
               </div>
               <button
                 onClick={handleOpenProductAdd}
@@ -510,7 +619,10 @@ const AdminDashboard = () => {
 
             {/* Product Search Bar */}
             <div className="relative max-w-md group">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors" size={16} />
+              <Search
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-accent transition-colors"
+                size={16}
+              />
               <input
                 type="text"
                 placeholder="Search products by name, category, GSM, size..."
@@ -538,23 +650,44 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {filteredProducts?.map((product) => (
-                      <tr key={product._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
+                      <tr
+                        key={product._id}
+                        className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors"
+                      >
                         <td className="py-3 px-6">
                           <img
-                            src={product.images?.[0] || "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=100&q=85"}
+                            src={
+                              product.images?.[0] ||
+                              "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=100&q=85"
+                            }
                             alt=""
                             className="w-12 h-12 rounded-xl object-cover border border-neutral-200 shadow-sm"
                           />
                         </td>
-                        <td className="py-3 px-6 font-semibold text-primary">{product.name}</td>
-                        <td className="py-3 px-6 text-neutral-500 font-medium">{product.category?.name || "Unassigned"}</td>
-                        <td className="py-3 px-6 font-mono text-xs">{product.gsm}</td>
-                        <td className="py-3 px-6 max-w-[150px] truncate text-xs" title={product.dimensions}>{product.dimensions}</td>
+                        <td className="py-3 px-6 font-semibold text-primary">
+                          {product.name}
+                        </td>
+                        <td className="py-3 px-6 text-neutral-500 font-medium">
+                          {product.category?.name || "Unassigned"}
+                        </td>
+                        <td className="py-3 px-6 font-mono text-xs">
+                          {product.gsm}
+                        </td>
+                        <td
+                          className="py-3 px-6 max-w-[150px] truncate text-xs"
+                          title={product.dimensions}
+                        >
+                          {product.dimensions}
+                        </td>
                         <td className="py-3 px-6 text-center">
                           {product.featured ? (
-                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-dark text-[9px] font-bold uppercase tracking-wider">Yes</span>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-dark text-[9px] font-bold uppercase tracking-wider">
+                              Yes
+                            </span>
                           ) : (
-                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-neutral-100 text-neutral-400 text-[9px] font-bold uppercase tracking-wider">No</span>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-neutral-100 text-neutral-400 text-[9px] font-bold uppercase tracking-wider">
+                              No
+                            </span>
                           )}
                         </td>
                         <td className="py-3 px-6 text-center">
@@ -562,17 +695,27 @@ const AdminDashboard = () => {
                             onClick={() => {
                               productUpdateMutation.mutate({
                                 id: product._id,
-                                data: { visible: !product.visible }
+                                data: { visible: !product.visible },
                               });
                             }}
                             className="mx-auto block p-1 rounded-xl hover:bg-neutral-100 transition-all cursor-pointer border border-transparent hover:border-neutral-200"
-                            title={product.visible ? "Hide from catalog" : "Show in catalog"}
+                            title={
+                              product.visible
+                                ? "Hide from catalog"
+                                : "Show in catalog"
+                            }
                             disabled={productUpdateMutation.isPending}
                           >
                             {product.visible ? (
-                              <Eye className="text-emerald-600 bg-emerald-50 p-1 rounded-full" size={24} />
+                              <Eye
+                                className="text-emerald-600 bg-emerald-50 p-1 rounded-full"
+                                size={24}
+                              />
                             ) : (
-                              <EyeOff className="text-neutral-400 bg-neutral-50 p-1 rounded-full" size={24} />
+                              <EyeOff
+                                className="text-neutral-400 bg-neutral-50 p-1 rounded-full"
+                                size={24}
+                              />
                             )}
                           </button>
                         </td>
@@ -587,7 +730,11 @@ const AdminDashboard = () => {
                             </button>
                             <button
                               onClick={() => {
-                                if (confirm(`Are you sure you want to delete ${product.name}?`)) {
+                                if (
+                                  confirm(
+                                    `Are you sure you want to delete ${product.name}?`,
+                                  )
+                                ) {
                                   productDeleteMutation.mutate(product._id);
                                 }
                               }}
@@ -602,7 +749,10 @@ const AdminDashboard = () => {
                     ))}
                     {(!filteredProducts || filteredProducts.length === 0) && (
                       <tr>
-                        <td colSpan={8} className="text-center py-8 text-neutral-400 italic">
+                        <td
+                          colSpan={8}
+                          className="text-center py-8 text-neutral-400 italic"
+                        >
                           {products && products.length > 0
                             ? "No products match your search query."
                             : "No products found. Add your first item."}
@@ -621,8 +771,12 @@ const AdminDashboard = () => {
           <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="heading-luxury text-3xl font-medium text-primary">Manage Categories</h2>
-                <p className="text-neutral-400 text-xs mt-1">Configure layout categories and specify rendering order.</p>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">
+                  Manage Categories
+                </h2>
+                <p className="text-neutral-400 text-xs mt-1">
+                  Configure layout categories and specify rendering order.
+                </p>
               </div>
               <button
                 onClick={handleOpenCategoryAdd}
@@ -645,10 +799,19 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {categories?.map((cat) => (
-                    <tr key={cat._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
-                      <td className="py-3.5 px-6 font-mono font-semibold text-primary">{cat.order}</td>
-                      <td className="py-3.5 px-6 font-semibold text-primary">{cat.name}</td>
-                      <td className="py-3.5 px-6 text-neutral-400 font-mono text-xs">{cat.slug}</td>
+                    <tr
+                      key={cat._id}
+                      className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors"
+                    >
+                      <td className="py-3.5 px-6 font-mono font-semibold text-primary">
+                        {cat.order}
+                      </td>
+                      <td className="py-3.5 px-6 font-semibold text-primary">
+                        {cat.name}
+                      </td>
+                      <td className="py-3.5 px-6 text-neutral-400 font-mono text-xs">
+                        {cat.slug}
+                      </td>
                       <td className="py-3.5 px-6 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button
@@ -660,7 +823,11 @@ const AdminDashboard = () => {
                           </button>
                           <button
                             onClick={() => {
-                              if (confirm(`Delete category ${cat.name}? Products using it must be reassigned first.`)) {
+                              if (
+                                confirm(
+                                  `Delete category ${cat.name}? Products using it must be reassigned first.`,
+                                )
+                              ) {
                                 categoryDeleteMutation.mutate(cat._id);
                               }
                             }}
@@ -675,7 +842,12 @@ const AdminDashboard = () => {
                   ))}
                   {(!categories || categories.length === 0) && (
                     <tr>
-                      <td colSpan={4} className="text-center py-6 text-neutral-400 italic">No categories created yet.</td>
+                      <td
+                        colSpan={4}
+                        className="text-center py-6 text-neutral-400 italic"
+                      >
+                        No categories created yet.
+                      </td>
                     </tr>
                   )}
                 </tbody>
@@ -689,8 +861,13 @@ const AdminDashboard = () => {
           <div className="space-y-6 text-left">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="heading-luxury text-3xl font-medium text-primary">Wholesale Inquiry Hub</h2>
-                <p className="text-neutral-400 text-xs mt-1">Track and manage trade leads, catalog requests, and email inquiries.</p>
+                <h2 className="heading-luxury text-3xl font-medium text-primary">
+                  Wholesale Inquiry Hub
+                </h2>
+                <p className="text-neutral-400 text-xs mt-1">
+                  Track and manage trade leads, catalog requests, and email
+                  inquiries.
+                </p>
               </div>
               <button
                 onClick={triggerExportCsv}
@@ -716,37 +893,63 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {leads?.map((lead) => (
-                      <tr key={lead._id} className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors">
+                      <tr
+                        key={lead._id}
+                        className="border-b border-neutral-50 hover:bg-secondary/10 transition-colors"
+                      >
                         <td className="py-3.5 px-6 text-xs text-neutral-400 font-mono">
                           {new Date(lead.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3.5 px-6">
-                          <div className="font-semibold text-primary">{lead.name}</div>
-                          <div className="text-xs text-neutral-400 mt-0.5">{lead.companyName || "N/A"}</div>
+                          <div className="font-semibold text-primary">
+                            {lead.name}
+                          </div>
+                          <div className="text-xs text-neutral-400 mt-0.5">
+                            {lead.companyName || "N/A"}
+                          </div>
                         </td>
                         <td className="py-3.5 px-6">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
-                            lead.type === "catalogue-download" ? "bg-accent/15 text-accent-dark" : "bg-blue-50 text-blue-600"
-                          }`}>
-                            {lead.type === "catalogue-download" ? "Catalogue" : "Quote Request"}
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[9px] uppercase font-bold tracking-wider ${
+                              lead.type === "catalogue-download"
+                                ? "bg-accent/15 text-accent-dark"
+                                : "bg-blue-50 text-blue-600"
+                            }`}
+                          >
+                            {lead.type === "catalogue-download"
+                              ? "Catalogue"
+                              : "Quote Request"}
                           </span>
                         </td>
                         <td className="py-3.5 px-6 text-xs">
                           <div className="font-semibold">{lead.phone}</div>
-                          <div className="text-neutral-400 mt-0.5">{lead.email}</div>
+                          <div className="text-neutral-400 mt-0.5">
+                            {lead.email}
+                          </div>
                         </td>
-                        <td className="py-3.5 px-6 max-w-xs text-xs whitespace-pre-wrap truncate" title={lead.requirement}>
+                        <td
+                          className="py-3.5 px-6 max-w-xs text-xs whitespace-pre-wrap truncate"
+                          title={lead.requirement}
+                        >
                           {lead.requirement || "No notes provided"}
                         </td>
                         <td className="py-3.5 px-6">
                           <select
                             value={lead.status}
-                            onChange={(e) => leadStatusMutation.mutate({ id: lead._id, status: e.target.value })}
+                            onChange={(e) =>
+                              leadStatusMutation.mutate({
+                                id: lead._id,
+                                status: e.target.value,
+                              })
+                            }
                             className={`px-3 py-1.5 rounded-xl border text-[10px] uppercase font-bold tracking-wider tracking-widest focus:outline-none cursor-pointer transition-all ${
-                              lead.status === "new" ? "bg-red-50 text-red-600 border-red-200 focus:ring-1 focus:ring-red-400" :
-                              lead.status === "contacted" ? "bg-amber-50 text-amber-600 border-amber-200 focus:ring-1 focus:ring-amber-400" :
-                              lead.status === "responded" ? "bg-blue-50 text-blue-600 border-blue-200 focus:ring-1 focus:ring-blue-400" :
-                              "bg-emerald-50 text-emerald-600 border-emerald-200 focus:ring-1 focus:ring-emerald-400"
+                              lead.status === "new"
+                                ? "bg-red-50 text-red-600 border-red-200 focus:ring-1 focus:ring-red-400"
+                                : lead.status === "contacted"
+                                  ? "bg-amber-50 text-amber-600 border-amber-200 focus:ring-1 focus:ring-amber-400"
+                                  : lead.status === "responded"
+                                    ? "bg-blue-50 text-blue-600 border-blue-200 focus:ring-1 focus:ring-blue-400"
+                                    : "bg-emerald-50 text-emerald-600 border-emerald-200 focus:ring-1 focus:ring-emerald-400"
                             }`}
                           >
                             <option value="new">New</option>
@@ -759,7 +962,12 @@ const AdminDashboard = () => {
                     ))}
                     {(!leads || leads.length === 0) && (
                       <tr>
-                        <td colSpan={6} className="text-center py-8 text-neutral-400 italic">No business inquiries logged yet.</td>
+                        <td
+                          colSpan={6}
+                          className="text-center py-8 text-neutral-400 italic"
+                        >
+                          No business inquiries logged yet.
+                        </td>
                       </tr>
                     )}
                   </tbody>
@@ -773,10 +981,15 @@ const AdminDashboard = () => {
         {activeTab === "settings" && (
           <div className="space-y-6 text-left max-w-3xl">
             <div>
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Website Content Management</h2>
-              <p className="text-neutral-400 text-xs mt-1">Instantly edit public website headlines, catalog resources, and copy.</p>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">
+                Website Content Management
+              </h2>
+              <p className="text-neutral-400 text-xs mt-1">
+                Instantly edit public website headlines, catalog resources, and
+                copy.
+              </p>
             </div>
-            
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -785,56 +998,91 @@ const AdminDashboard = () => {
               className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-accent/10 space-y-5"
             >
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">Hero Headline Title</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                  Hero Headline Title
+                </label>
                 <input
                   type="text"
                   required
                   value={settingsForm.heroTitle}
-                  onChange={(e) => setSettingsForm({ ...settingsForm, heroTitle: e.target.value })}
+                  onChange={(e) =>
+                    setSettingsForm({
+                      ...settingsForm,
+                      heroTitle: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">Hero Subtitle</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                  Hero Subtitle
+                </label>
                 <textarea
                   required
                   rows={2}
                   value={settingsForm.heroSubtitle}
-                  onChange={(e) => setSettingsForm({ ...settingsForm, heroSubtitle: e.target.value })}
+                  onChange={(e) =>
+                    setSettingsForm({
+                      ...settingsForm,
+                      heroSubtitle: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">Hero Background Image URL</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                  Hero Background Image URL
+                </label>
                 <input
                   type="text"
                   required
                   value={settingsForm.heroImage}
-                  onChange={(e) => setSettingsForm({ ...settingsForm, heroImage: e.target.value })}
+                  onChange={(e) =>
+                    setSettingsForm({
+                      ...settingsForm,
+                      heroImage: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">Catalogue PDF URL</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                  Catalogue PDF URL
+                </label>
                 <input
                   type="text"
                   required
                   value={settingsForm.catalogueUrl}
-                  onChange={(e) => setSettingsForm({ ...settingsForm, catalogueUrl: e.target.value })}
+                  onChange={(e) =>
+                    setSettingsForm({
+                      ...settingsForm,
+                      catalogueUrl: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">About Us Text</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1.5">
+                  About Us Text
+                </label>
                 <textarea
                   required
                   rows={4}
                   value={settingsForm.aboutText}
-                  onChange={(e) => setSettingsForm({ ...settingsForm, aboutText: e.target.value })}
+                  onChange={(e) =>
+                    setSettingsForm({
+                      ...settingsForm,
+                      aboutText: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none resize-none transition-shadow"
                 />
               </div>
@@ -844,7 +1092,9 @@ const AdminDashboard = () => {
                 disabled={settingsMutation.isPending}
                 className="w-full md:w-auto px-8 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-[0_4px_14px_rgba(17,17,17,0.1)] hover:shadow-[0_6px_20px_rgba(17,17,17,0.2)] cursor-pointer"
               >
-                {settingsMutation.isPending ? "Saving changes..." : "Save Website Settings"}
+                {settingsMutation.isPending
+                  ? "Saving changes..."
+                  : "Save Website Settings"}
               </button>
             </form>
           </div>
@@ -854,14 +1104,22 @@ const AdminDashboard = () => {
         {activeTab === "media" && (
           <div className="space-y-6 text-left max-w-2xl">
             <div>
-              <h2 className="heading-luxury text-3xl font-medium text-primary">Media Library</h2>
-              <p className="text-neutral-400 text-xs mt-1">Upload files and get persistent public links to use in forms.</p>
+              <h2 className="heading-luxury text-3xl font-medium text-primary">
+                Media Library
+              </h2>
+              <p className="text-neutral-400 text-xs mt-1">
+                Upload files and get persistent public links to use in forms.
+              </p>
             </div>
-            
+
             <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-accent/10 space-y-6">
-              <h3 className="font-serif text-lg text-primary font-medium">Upload File Attachment</h3>
+              <h3 className="font-serif text-lg text-primary font-medium">
+                Upload File Attachment
+              </h3>
               <p className="text-neutral-500 text-xs leading-relaxed">
-                Upload image assets (JPG, PNG, WEBP) or catalogue PDFs. Once uploaded, the system will output a public URL you can copy directly into your products or content fields.
+                Upload image assets (JPG, PNG, WEBP) or catalogue PDFs. Once
+                uploaded, the system will output a public URL you can copy
+                directly into your products or content fields.
               </p>
 
               <form onSubmit={handleGeneralUpload} className="space-y-4">
@@ -873,7 +1131,11 @@ const AdminDashboard = () => {
                     onChange={(e) => setMediaFile(e.target.files[0])}
                     className="text-xs text-neutral-600 w-fit cursor-pointer file:mr-4 file:py-2.5 file:px-5 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent/10 file:text-accent-dark hover:file:bg-accent/20 transition-all"
                   />
-                  {mediaFile && <span className="text-xs text-neutral-600 mt-3 font-semibold bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200">{mediaFile.name}</span>}
+                  {mediaFile && (
+                    <span className="text-xs text-neutral-600 mt-3 font-semibold bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200">
+                      {mediaFile.name}
+                    </span>
+                  )}
                 </div>
 
                 <button
@@ -881,7 +1143,9 @@ const AdminDashboard = () => {
                   disabled={uploadLoading || !mediaFile}
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow disabled:bg-neutral-300 cursor-pointer"
                 >
-                  {uploadLoading ? "Uploading to System..." : "Upload Selected File"}
+                  {uploadLoading
+                    ? "Uploading to System..."
+                    : "Upload Selected File"}
                 </button>
               </form>
 
@@ -912,7 +1176,9 @@ const AdminDashboard = () => {
                       <ExternalLink size={14} />
                     </a>
                   </div>
-                  <span className="text-[10px] text-emerald-600">Click inside the input box to copy the URL directly.</span>
+                  <span className="text-[10px] text-emerald-600">
+                    Click inside the input box to copy the URL directly.
+                  </span>
                 </div>
               )}
             </div>
@@ -932,7 +1198,9 @@ const AdminDashboard = () => {
             </button>
 
             <h3 className="font-serif text-2xl text-primary font-medium mb-6">
-              {editingProduct ? `Edit Product: ${editingProduct.name}` : "Add New Blanket/Textile"}
+              {editingProduct
+                ? `Edit Product: ${editingProduct.name}`
+                : "Add New Blanket/Textile"}
             </h3>
 
             {formError && (
@@ -945,30 +1213,44 @@ const AdminDashboard = () => {
             <form onSubmit={handleProductSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Product Name *</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    Product Name{" "}
+                  </label>
                   <input
                     type="text"
-                    required
                     value={productForm.name}
-                    onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
+                    onChange={(e) =>
+                      setProductForm({ ...productForm, name: e.target.value })
+                    }
                     className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="Royale Mink Blanket"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Category *</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    Category *
+                  </label>
                   <select
                     value={productForm.category}
-                    onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
+                    onChange={(e) =>
+                      setProductForm({
+                        ...productForm,
+                        category: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:outline-none cursor-pointer"
                     disabled={categoriesLoading}
                   >
                     <option value="" disabled>
-                      {categoriesLoading ? "Loading categories..." : "Select a Category"}
+                      {categoriesLoading
+                        ? "Loading categories..."
+                        : "Select a Category"}
                     </option>
-                    {categories?.map(c => (
-                      <option key={c._id} value={c._id}>{c.name}</option>
+                    {categories?.map((c) => (
+                      <option key={c._id} value={c._id}>
+                        {c.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -976,31 +1258,59 @@ const AdminDashboard = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">GSM Weight *</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    Weight *
+                  </label>
                   <input
                     type="text"
                     required
-                    value={productForm.gsm}
-                    onChange={(e) => setProductForm({ ...productForm, gsm: e.target.value })}
+                    value={productForm.weight}
+                    onChange={(e) =>
+                      setProductForm({ ...productForm, weight: e.target.value })
+                    }
                     className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
-                    placeholder="420 GSM"
+                    placeholder="1.5 kg"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Dimensions / Size *</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    GSM *
+                  </label>
                   <input
                     type="text"
                     required
-                    value={productForm.dimensions}
-                    onChange={(e) => setProductForm({ ...productForm, dimensions: e.target.value })}
+                    value={productForm.gsm}
+                    onChange={(e) =>
+                      setProductForm({ ...productForm, gsm: e.target.value })
+                    }
                     className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
-                    placeholder="60 x 90 inches"
+                    placeholder="420 GSM"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    Dimensions / Size *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={productForm.dimensions}
+                    onChange={(e) =>
+                      setProductForm({
+                        ...productForm,
+                        dimensions: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
+                    placeholder="60 x 90 inches"
+                  />
+                </div>
+
+                {/* Material Composition - temporarily disabled
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Material Composition</label>
                   <input
@@ -1011,13 +1321,23 @@ const AdminDashboard = () => {
                     placeholder="Ultra-soft polyester mink"
                   />
                 </div>
+                */}
+              </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Wash Care Tips (Comma separated)</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                    Wash Care Tips (Comma separated)
+                  </label>
                   <input
                     type="text"
                     value={productForm.washCare}
-                    onChange={(e) => setProductForm({ ...productForm, washCare: e.target.value })}
+                    onChange={(e) =>
+                      setProductForm({
+                        ...productForm,
+                        washCare: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                     placeholder="Gentle machine wash, Do not bleach"
                   />
@@ -1025,11 +1345,15 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Product Image URLs (One URL per line)</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                  Product Image URLs (One URL per line)
+                </label>
                 <textarea
                   rows={3}
                   value={productForm.images}
-                  onChange={(e) => setProductForm({ ...productForm, images: e.target.value })}
+                  onChange={(e) =>
+                    setProductForm({ ...productForm, images: e.target.value })
+                  }
                   className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-xs font-mono focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none resize-none transition-shadow"
                   placeholder="https://images.unsplash.com/photo-xxx..."
                 />
@@ -1037,8 +1361,12 @@ const AdminDashboard = () => {
 
               <div className="bg-secondary/40 p-5 rounded-2xl border border-accent/10 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="flex flex-col gap-0.5 text-center sm:text-left">
-                  <span className="text-xs font-bold text-neutral-600">Quick Upload Image Helper</span>
-                  <span className="text-[10px] text-neutral-400">Upload a local file to automatically append its URL here.</span>
+                  <span className="text-xs font-bold text-neutral-600">
+                    Quick Upload Image Helper
+                  </span>
+                  <span className="text-[10px] text-neutral-400">
+                    Upload a local file to automatically append its URL here.
+                  </span>
                 </div>
                 <input
                   type="file"
@@ -1053,7 +1381,12 @@ const AdminDashboard = () => {
                   <input
                     type="checkbox"
                     checked={productForm.featured}
-                    onChange={(e) => setProductForm({ ...productForm, featured: e.target.checked })}
+                    onChange={(e) =>
+                      setProductForm({
+                        ...productForm,
+                        featured: e.target.checked,
+                      })
+                    }
                     className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent cursor-pointer"
                   />
                   Feature on Homepage Slider
@@ -1063,7 +1396,12 @@ const AdminDashboard = () => {
                   <input
                     type="checkbox"
                     checked={productForm.visible}
-                    onChange={(e) => setProductForm({ ...productForm, visible: e.target.checked })}
+                    onChange={(e) =>
+                      setProductForm({
+                        ...productForm,
+                        visible: e.target.checked,
+                      })
+                    }
                     className="w-4 h-4 text-accent border-neutral-300 rounded focus:ring-accent cursor-pointer"
                   />
                   Visible in Public Catalog
@@ -1080,10 +1418,16 @@ const AdminDashboard = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={productCreateMutation.isPending || productUpdateMutation.isPending}
+                  disabled={
+                    productCreateMutation.isPending ||
+                    productUpdateMutation.isPending
+                  }
                   className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-colors shadow-[0_4px_14px_rgba(17,17,17,0.1)]"
                 >
-                  {productCreateMutation.isPending || productUpdateMutation.isPending ? "Saving Product..." : "Save Product"}
+                  {productCreateMutation.isPending ||
+                  productUpdateMutation.isPending
+                    ? "Saving Product..."
+                    : "Save Product"}
                 </button>
               </div>
             </form>
@@ -1103,7 +1447,9 @@ const AdminDashboard = () => {
             </button>
 
             <h3 className="font-serif text-2xl text-primary font-medium mb-5">
-              {editingCategory ? `Edit Category: ${editingCategory.name}` : "Create New Category"}
+              {editingCategory
+                ? `Edit Category: ${editingCategory.name}`
+                : "Create New Category"}
             </h3>
 
             {formError && (
@@ -1114,25 +1460,36 @@ const AdminDashboard = () => {
 
             <form onSubmit={handleCategorySubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Category Name *</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                  Category Name *
+                </label>
                 <input
                   type="text"
                   required
                   value={categoryForm.name}
-                  onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
+                  onChange={(e) =>
+                    setCategoryForm({ ...categoryForm, name: e.target.value })
+                  }
                   className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                   placeholder="e.g. Blankets"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">Sequence Order Position</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                  Sequence Order Position
+                </label>
                 <input
                   type="number"
                   min="1"
                   required
                   value={categoryForm.order}
-                  onChange={(e) => setCategoryForm({ ...categoryForm, order: parseInt(e.target.value) || 1 })}
+                  onChange={(e) =>
+                    setCategoryForm({
+                      ...categoryForm,
+                      order: parseInt(e.target.value) || 1,
+                    })
+                  }
                   className="w-full px-4 py-2.5 border border-neutral-300 rounded-xl bg-white text-sm focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none transition-shadow"
                 />
               </div>
@@ -1147,10 +1504,16 @@ const AdminDashboard = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={categoryCreateMutation.isPending || categoryUpdateMutation.isPending}
+                  disabled={
+                    categoryCreateMutation.isPending ||
+                    categoryUpdateMutation.isPending
+                  }
                   className="px-6 py-3 rounded-xl bg-primary hover:bg-neutral-900 text-white font-semibold text-xs uppercase tracking-wider transition-all shadow-[0_4px_14px_rgba(17,17,17,0.1)]"
                 >
-                  {categoryCreateMutation.isPending || categoryUpdateMutation.isPending ? "Saving..." : "Save Category"}
+                  {categoryCreateMutation.isPending ||
+                  categoryUpdateMutation.isPending
+                    ? "Saving..."
+                    : "Save Category"}
                 </button>
               </div>
             </form>

@@ -447,7 +447,7 @@ const Home = ({ onDownloadCatalog }) => {
                   double-sided warmth.
                 </p>
                 <Link
-                  to="/products?category=blankets"
+                  to="/products?category=heavy-blankets"
                   className="flex items-center gap-1.5 text-accent font-medium text-xs uppercase tracking-widest hover:text-accent-light transition-colors"
                 >
                   View Catalog <ArrowRight size={14} />
@@ -506,7 +506,7 @@ const Home = ({ onDownloadCatalog }) => {
                   experience.
                 </p>
                 <Link
-                  to="/products?category=fitted-sheets"
+                  to="/products?category=bed-sheets"
                   className="flex items-center gap-1.5 text-accent font-medium text-xs uppercase tracking-widest hover:text-accent-light transition-colors"
                 >
                   View Catalog <ArrowRight size={14} />
@@ -724,9 +724,11 @@ const Home = ({ onDownloadCatalog }) => {
                         <span className="text-xs uppercase tracking-wider font-semibold text-accent">
                           {product.category?.name || "Premium beddings"}
                         </span>
+                        {/* Product name hidden on website for now - still saved in DB
                         <h3 className="heading-luxury text-3xl md:text-4xl text-primary font-medium">
                           {product.name}
                         </h3>
+                        */}
                         <p className="text-sm text-neutral-600 leading-relaxed max-w-md">
                           {product.material ||
                             "Crafted using premium high-longevity yarn with special thermal traps for maximum winter isolation and breathability."}

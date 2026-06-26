@@ -9,7 +9,10 @@ const Footer = () => {
 
   const handleWhatsApp = () => {
     // Contact details for WhatsApp chat
-    window.open("https://wa.me/919896915012?text=Hello%20Florinaa%20team,%20I'm%20interested%20in%20your%20premium%20blankets%20and%20bedding%20collection.", "_blank");
+    window.open(
+      "https://wa.me/919896915012?text=Hello%20Florinaa%20team,%20I'm%20interested%20in%20your%20premium%20blankets%20and%20bedding%20collection.",
+      "_blank",
+    );
   };
 
   // Handle quick link clicks – smooth scroll if on homepage, navigate first if on another page
@@ -40,7 +43,8 @@ const Footer = () => {
             />
           </div>
           <p className="text-secondary/70 text-sm leading-relaxed mt-2 font-light">
-            Sleep in Style. A lifestyle home brand backed by Maulifab's state-of-the-art manufacturing discipline. Delivering quiet luxury to premium homes worldwide.
+            Sleep in Style. Florinaa brings together timeless design, premium
+            comfort, and everyday luxury for modern homes.
           </p>
           <button
             onClick={handleWhatsApp}
@@ -58,27 +62,46 @@ const Footer = () => {
           </h3>
           <ul className="flex flex-col gap-2.5 text-sm text-secondary/70">
             <li>
-              <a href="/#collection" onClick={(e) => handleQuickLink(e, "collection")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a
+                href="/#collection"
+                onClick={(e) => handleQuickLink(e, "collection")}
+                className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit"
+              >
                 Luxury Collection
               </a>
             </li>
             <li>
-              <a href="/#excellence" onClick={(e) => handleQuickLink(e, "excellence")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a
+                href="/#excellence"
+                onClick={(e) => handleQuickLink(e, "excellence")}
+                className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit"
+              >
                 Manufacturing Excellence
               </a>
             </li>
             <li>
-              <a href="/#process" onClick={(e) => handleQuickLink(e, "process")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a
+                href="/#process"
+                onClick={(e) => handleQuickLink(e, "process")}
+                className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit"
+              >
                 Our Weaving Process
               </a>
             </li>
             <li>
-              <a href="/#testimonials" onClick={(e) => handleQuickLink(e, "testimonials")} className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <a
+                href="/#testimonials"
+                onClick={(e) => handleQuickLink(e, "testimonials")}
+                className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit"
+              >
                 Client Testimonials
               </a>
             </li>
             <li>
-              <Link to="/products" className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit">
+              <Link
+                to="/products"
+                className="hover:text-accent hover:translate-x-1.5 transition-all duration-300 block w-fit"
+              >
                 Products Catalogue
               </Link>
             </li>
@@ -92,13 +115,15 @@ const Footer = () => {
           </h3>
           <ul className="flex flex-col gap-3.5 text-sm text-secondary/70">
             <li className="flex items-start gap-2.5">
-              <MapPin size={18} className="text-accent shrink-0 mt-0.5" />
+              <MapPin size={20} className="text-accent shrink-0 mt-0.5" />
               <div className="flex flex-col text-left">
-                <span className="font-semibold text-white">MAULIFAB PVT LIMITED</span>
-                <span className="font-light text-xs mt-1 leading-relaxed">
-                  Khasra No.-61//11/1/1, Barsat Road, Faridpur Road, Village Pundri, Gharunda, Haryana-132114
+                <span className="font-light text-xs leading-relaxed">
+                  Khasra No.-61//11/1/1, Barsat Road, Faridpur Road, Village
+                  Pundri, Gharunda, Haryana-132114
                 </span>
-                <span className="text-[10px] text-accent/80 mt-1.5 font-semibold">GST: 06AAOCM1201A1Z7</span>
+                <span className="text-[10px] text-accent/80 mt-1.5 font-semibold">
+                  GST: 06AAOCM1201A1Z7
+                </span>
               </div>
             </li>
 
@@ -116,7 +141,7 @@ const Footer = () => {
             <li className="border-t border-accent/10 my-1" />
             <li className="flex items-center gap-2.5">
               <Mail size={16} className="text-accent shrink-0" />
-              <span>info@maulifab.com</span>
+              <span>sandeep11184@hotmail.com</span>
             </li>
           </ul>
         </div>
@@ -151,7 +176,9 @@ const Footer = () => {
             <li className="flex items-start gap-2.5">
               <Phone size={16} className="text-accent shrink-0 mt-0.5" />
               <div className="flex flex-col text-left">
-                <span className="font-semibold text-white">Mr Sandeep Tayal</span>
+                <span className="font-semibold text-white">
+                  Mr Sandeep Tayal
+                </span>
                 <span className="text-xs">+91 9896915012</span>
               </div>
             </li>
@@ -162,7 +189,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 border-t border-[rgba(200,169,126,0.08)] pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-secondary/50">
         <p>© {currentYear} Florinaa. All rights reserved.</p>
         <p className="mt-2 sm:mt-0">
-          Crafted by <span className="text-accent">Maulifab Pvt. Limited</span>
+          Crafted by <span className="text-accent">Florinaa</span>
         </p>
       </div>
     </footer>

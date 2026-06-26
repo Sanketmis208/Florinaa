@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Award, Globe, Heart, Factory, Calendar } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  Globe,
+  Heart,
+  Factory,
+  Calendar,
+} from "lucide-react";
 import BlurText from "../components/BlurText";
 
 const About = () => {
@@ -10,9 +17,9 @@ const About = () => {
   }, []);
 
   const milestones = [
-    { year: "1978", label: "Ess Pee Exports Founded", icon: Calendar },
+    { year: "Elegant", label: "DESIGN & COMFORT", icon: Calendar },
     { year: "46+", label: "Years of Textile Mastery", icon: Award },
-    { year: "2020", label: "Florinaa Brand Launched", icon: Heart },
+    { year: "Luxury", label: "Designed for Modern Homes", icon: Heart },
     { year: "Global", label: "Worldwide Distribution", icon: Globe },
   ];
 
@@ -70,9 +77,10 @@ const About = () => {
                 transition={{ duration: 0.7 }}
               >
                 <p className="text-lg md:text-xl text-primary/90 leading-relaxed font-light">
-                  At Florinaa, we specialize in creating premium flannel products—bedsheets,
-                  blankets, duvet covers, and more—that bring warmth, softness, and timeless
-                  style into homes worldwide.
+                  At Florinaa, we specialize in creating premium flannel
+                  products—bedsheets, blankets, duvet covers, and more—that
+                  bring warmth, softness, and timeless style into homes
+                  worldwide.
                 </p>
               </motion.div>
 
@@ -84,12 +92,16 @@ const About = () => {
               >
                 <p className="text-base text-neutral-600 leading-relaxed">
                   Florinaa is the proud extension of{" "}
-                  <span className="font-semibold text-primary">Ess Pee Exports</span>, a
-                  Panipat-based textile company with over{" "}
-                  <span className="font-semibold text-accent">46 years of expertise</span> in
-                  global trade and manufacturing. This rich heritage is the foundation of
-                  Florinaa, ensuring that every product reflects decades of craftsmanship,
-                  reliability, and innovation.
+                  <span className="font-semibold text-primary">
+                    Ess Pee Exports
+                  </span>
+                  , a Panipat-based textile company with over{" "}
+                  <span className="font-semibold text-accent">
+                    46 years of expertise
+                  </span>{" "}
+                  in global trade and manufacturing. This rich heritage is the
+                  foundation of Florinaa, ensuring that every product reflects
+                  decades of craftsmanship, reliability, and innovation.
                 </p>
               </motion.div>
 
@@ -100,10 +112,11 @@ const About = () => {
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
                 <p className="text-base text-neutral-600 leading-relaxed">
-                  Our vision is to make flannel more than just fabric—it's a lifestyle of
-                  comfort and trust. Each piece is thoughtfully designed, blending traditional
-                  textile artistry with modern design sensibilities, so your home feels both
-                  stylish and inviting.
+                  Our vision is to make flannel more than just fabric—it's a
+                  lifestyle of comfort and trust. Each piece is thoughtfully
+                  designed, blending traditional textile artistry with modern
+                  design sensibilities, so your home feels both stylish and
+                  inviting.
                 </p>
               </motion.div>
 
@@ -115,9 +128,9 @@ const About = () => {
                 transition={{ duration: 0.7, delay: 0.4 }}
               >
                 <p className="text-base text-primary/80 leading-relaxed italic font-light">
-                  "With Florinaa, you don't just choose flannel—you embrace a brand shaped
-                  by heritage, driven by innovation, and perfected through nearly half a
-                  century of textile mastery."
+                  "With Florinaa, you don't just choose flannel—you embrace a
+                  brand shaped by heritage, driven by innovation, and perfected
+                  through nearly half a century of textile mastery."
                 </p>
               </motion.div>
 
@@ -163,8 +176,6 @@ const About = () => {
                   </motion.div>
                 ))}
               </div>
-
-
             </div>
           </div>
         </div>

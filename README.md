@@ -1,6 +1,6 @@
 # Florinaa - Sleep in Style
 
-Premium website and protected admin dashboard for Florinaa by Maulifab Pvt. Limited.
+Premium website and protected admin dashboard for Florinaa.
 
 ## What is included
 
