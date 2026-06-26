@@ -11,10 +11,10 @@ const getContent = async (req, res) => {
     if (!content) {
       content = new Content({
         heroTitle: "Where Comfort Meets Elegance",
-        heroSubtitle: "Premium bedding, blankets, sheets, and soft-floor textiles crafted by Maulifab Pvt. Limited for homes that value quiet luxury.",
+        heroSubtitle: "Premium flannel bedding, blankets, sheets, and soft-floor textiles crafted by Florinaa for homes that value quiet luxury.",
         heroImage: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1800&q=90",
         catalogueUrl: "/catalogue-placeholder.pdf",
-        aboutText: "Florinaa - Sleep in Style brings Maulifab's textile manufacturing discipline into a warmer, more design-led home lifestyle brand. From Panipat to premium homes, every piece is designed around softness, durability, and dependable finishing.",
+        aboutText: "Florinaa - Sleep in Style brings textile manufacturing discipline into a warmer, more design-led home lifestyle brand. From Panipat to premium homes, every piece is designed around softness, durability, and dependable finishing.",
         facilityImages: [
           "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=85",
           "https://images.unsplash.com/photo-1581093458791-9d15482442f6?auto=format&fit=crop&w=1200&q=85",

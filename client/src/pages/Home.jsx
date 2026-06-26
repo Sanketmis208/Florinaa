@@ -476,7 +476,7 @@ const Home = ({ onDownloadCatalog }) => {
                   cloud-like comfort for cold nights.
                 </p>
                 <Link
-                  to="/products?category=quilts"
+                  to="/products?category=duvet-covers-dohar"
                   className="flex items-center gap-1.5 text-accent font-medium text-xs uppercase tracking-widest hover:text-accent-light transition-colors"
                 >
                   View Catalog <ArrowRight size={14} />

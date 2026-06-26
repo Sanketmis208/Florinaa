@@ -125,10 +125,10 @@ const runMigration = async () => {
     const contentData = originalDb.content || {};
     const content = new Content({
       heroTitle: contentData.heroTitle || "Where Comfort Meets Elegance",
-      heroSubtitle: contentData.heroSubtitle || "Premium bedding, blankets, sheets, and soft-floor textiles crafted by Maulifab Pvt. Limited for homes that value quiet luxury.",
+      heroSubtitle: contentData.heroSubtitle || "Premium flannel bedding, blankets, sheets, and soft-floor textiles crafted by Florinaa for homes that value quiet luxury.",
       heroImage: contentData.heroImage || "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1800&q=90",
       catalogueUrl: contentData.catalogueUrl || "/catalogue-placeholder.pdf",
-      aboutText: contentData.about || "Florinaa - Sleep in Style brings Maulifab's textile manufacturing discipline into a lifestyle brand.",
+      aboutText: contentData.about || "Florinaa - Sleep in Style brings textile manufacturing discipline into a lifestyle brand.",
       facilityImages: contentData.facilityImages || [],
     });
     await content.save();
