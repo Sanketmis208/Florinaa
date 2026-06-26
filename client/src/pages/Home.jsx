@@ -277,23 +277,23 @@ const Home = ({ onDownloadCatalog }) => {
   const testimonials = [
     {
       quote:
-        "Florinaa blankets have elevated our hotel rooms to a whole new level. Our guests regularly comment on the luxury softness and weight of the mink blankets.",
-      author: "Radisson Blu, Sourcing Manager",
-      location: "New Delhi",
+        "The flannel blanket feels incredibly soft and cozy. It's lightweight yet keeps us comfortably warm through the night. A beautiful addition to our bedroom!",
+      author: "Priya",
+      location: "Mumbai",
       rating: 5,
     },
     {
       quote:
-        "As textile exporters to European markets, Maulifab's finishing and quality check procedures are second to none. Reliable GSM weight and exquisite packaging.",
-      author: "V. K. Export House, Managing Director",
-      location: "Mumbai Port",
+        "Loved the premium finish and the plush texture. Even after multiple washes, the blanket remains soft and comfortable. Great value for everyday use.",
+      author: "Kaashvi",
+      location: "Chennai",
       rating: 5,
     },
     {
       quote:
-        "Custom dimensions and bespoke weaving patterns were delivered on time. The hotel collection sheets feel exactly like Egyptian cotton but with higher longevity.",
-      author: "Taj Gateway Resorts, Operations Lead",
-      location: "Goa",
+        "Perfect for air-conditioned rooms and cool evenings. The fabric is gentle on the skin, and the elegant design looks fantastic on the bed.",
+      author: "Sarv",
+      location: "Bengaluru",
       rating: 5,
     },
   ];
