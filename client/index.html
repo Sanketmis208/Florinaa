@@ -30,6 +30,53 @@
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Search Engine Indexing Instructions -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Organization & Local Business Schema (JSON-LD) for Search Engines -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Florinaa - Sleep in Style",
+        "image": "https://www.florinaa.com/FLORINAA_Logo_Transparent.png",
+        "@id": "https://www.florinaa.com/#localbusiness",
+        "url": "https://www.florinaa.com",
+        "telephone": "+91 98969 15012",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "193, Sec 29 Part-2, Huda",
+          "addressLocality": "Panipat",
+          "addressRegion": "Haryana",
+          "postalCode": "132103",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 29.3909,
+          "longitude": 76.9635
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "19:30"
+        },
+        "sameAs": [
+          "https://www.florinaa.com"
+        ]
+      }
+    </script>
   </head>
   <body class="bg-secondary text-primary font-sans antialiased selection:bg-accent selection:text-primary">
     <div id="root"></div>

@@ -25,6 +25,7 @@ import {
   Grip,
   LayoutGrid,
 } from "lucide-react";
+import { useDocumentMetadata } from "../hooks/useDocumentMetadata";
 import { productsAPI, categoriesAPI, leadsAPI } from "../services/api";
 
 const TiltCard = ({ children, className, onClick }) => {
@@ -82,6 +83,11 @@ const TiltCard = ({ children, className, onClick }) => {
 };
 
 const Products = () => {
+  useDocumentMetadata(
+    "Premium Blankets & Duvet Covers Catalogue | Florinaa Products",
+    "Browse Florinaa's premium bedding and blanket products catalogue: micro-polyester blankets, cotton dohars, fitted bedsheets, comforters, carpets, and rugs."
+  );
+
   const location = useLocation();
 
   // Search & Filters State

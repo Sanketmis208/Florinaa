@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 import { contentAPI, productsAPI, leadsAPI } from "../services/api";
 
+import { useDocumentMetadata } from "../hooks/useDocumentMetadata";
+
 const Hero3DCanvas = lazy(() => import("../components/Hero3DCanvas"));
 
 gsap.registerPlugin(ScrollTrigger);
@@ -94,6 +96,11 @@ const ScrollCounter = ({
 };
 
 const Home = ({ onDownloadCatalog }) => {
+  useDocumentMetadata(
+    "Florinaa - Sleep in Style | Premium Flannel Bedding & Luxury Blankets",
+    "Discover Florinaa's collection of ultra-soft blankets, custom cotton dohars, fitted bed sheets, and premium quilts. Experience crafted textile excellence from Panipat."
+  );
+
   const horizontalSectionRef = useRef(null);
   const horizontalTriggerRef = useRef(null);
   const heroRef = useRef(null);
