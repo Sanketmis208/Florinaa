@@ -636,7 +636,7 @@ const AdminDashboard = () => {
                       <th className="py-4 px-6">Name</th>
                       <th className="py-4 px-6">Category</th>
                       <th className="py-4 px-6">GSM</th>
-                      <th className="py-4 px-6">Size</th>
+
                       <th className="py-4 px-6 text-center">Featured</th>
                       <th className="py-4 px-6 text-center">Visible</th>
                       <th className="py-4 px-6 text-right">Actions</th>
@@ -667,12 +667,7 @@ const AdminDashboard = () => {
                         <td className="py-3 px-6 font-mono text-xs">
                           {product.gsm}
                         </td>
-                        {/* <td
-                          className="py-3 px-6 max-w-[150px] truncate text-xs"
-                          title={product.dimensions}
-                        >
-                          {product.dimensions}
-                        </td> */}
+
                         <td className="py-3 px-6 text-center">
                           {product.featured ? (
                             <span className="inline-block px-2.5 py-0.5 rounded-full bg-accent/15 text-accent-dark text-[9px] font-bold uppercase tracking-wider">
@@ -744,7 +739,7 @@ const AdminDashboard = () => {
                     {(!filteredProducts || filteredProducts.length === 0) && (
                       <tr>
                         <td
-                          colSpan={8}
+                          colSpan={7}
                           className="text-center py-8 text-neutral-400 italic"
                         >
                           {products && products.length > 0
