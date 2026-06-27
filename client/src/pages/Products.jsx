@@ -15,6 +15,15 @@ import {
   AlertCircle,
   FileText,
   ChevronDown,
+  Layers,
+  Snowflake,
+  BedDouble,
+  CloudSun,
+  Package,
+  Footprints,
+  Bath,
+  Grip,
+  LayoutGrid,
 } from "lucide-react";
 import { productsAPI, categoriesAPI, leadsAPI } from "../services/api";
 
@@ -209,22 +218,6 @@ const Products = () => {
   return (
     <div className="pt-24 pb-20 min-h-screen bg-secondary">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        {/* Banner Section */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">
-            Exporters Collection
-          </span>
-          <h1 className="heading-luxury text-4xl md:text-5xl text-primary font-medium">
-            The Weaving Catalogue
-          </h1>
-          <div className="w-16 h-[1.5px] bg-accent mx-auto my-5" />
-          <p className="text-neutral-600 text-sm leading-relaxed">
-            Browse our catalog of blankets, sheets, quilts, and soft floor
-            textiles. Click any product to view its technical specifications and
-            request wholesale pricing.
-          </p>
-        </div>
-
         {/* Filter Controls Row */}
         <div className="bg-white rounded-2xl p-6 shadow-md border border-accent/10 mb-8 flex flex-col gap-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -273,27 +266,42 @@ const Products = () => {
           <div className="flex flex-wrap items-center justify-center gap-2.5 w-full py-1">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-colors shrink-0 cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-all duration-300 shrink-0 cursor-pointer ${
                 selectedCategory === "all"
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-white shadow-md"
                   : "bg-secondary text-neutral-600 hover:bg-neutral-200"
               }`}
             >
+              <Sparkles size={13} />
               All Items
             </button>
-            {categories?.map((cat) => (
-              <button
-                key={cat._id}
-                onClick={() => setSelectedCategory(cat.slug)}
-                className={`px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-colors shrink-0 cursor-pointer ${
-                  selectedCategory === cat.slug
-                    ? "bg-primary text-white"
-                    : "bg-secondary text-neutral-600 hover:bg-neutral-200"
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
+            {categories?.map((cat) => {
+              const IconComp = {
+                "light-blankets": Layers,
+                "heavy-blankets": Snowflake,
+                "fitted-sheets": BedDouble,
+                "comforters": CloudSun,
+                "bed-sheets": Package,
+                "flano-carpets": LayoutGrid,
+                "flano-bath-mats": Bath,
+                "flano-rugs": Grip,
+                "duvet-covers-dohar": Layers,
+              }[cat.slug] || Filter;
+              return (
+                <button
+                  key={cat._id}
+                  onClick={() => setSelectedCategory(cat.slug)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-all duration-300 shrink-0 cursor-pointer ${
+                    selectedCategory === cat.slug
+                      ? "bg-primary text-white shadow-md"
+                      : "bg-secondary text-neutral-600 hover:bg-neutral-200"
+                  }`}
+                >
+                  <IconComp size={13} />
+                  {cat.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
