@@ -619,7 +619,7 @@ const AdminDashboard = () => {
               />
               <input
                 type="text"
-                placeholder="Search products by name, category, GSM, size..."
+                placeholder="Search products by name, category, GSM..."
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-neutral-200 hover:border-neutral-300 focus:border-accent focus:ring-1 focus:ring-accent bg-white text-xs focus:outline-none transition-all duration-200 shadow-sm"

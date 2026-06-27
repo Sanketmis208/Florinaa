@@ -688,7 +688,7 @@ const Home = ({ onDownloadCatalog }) => {
             />
             <p className="text-neutral-500 text-sm mt-3 max-w-xl">
               Swipe through a closer inspection of our premium items. Look at
-              custom fabric weaves, dimensions, and specifications.
+              custom fabric weaves, materials, and specifications.
             </p>
           </div>
 
@@ -1134,7 +1134,7 @@ const Home = ({ onDownloadCatalog }) => {
                         <textarea
                           required
                           rows={4}
-                          placeholder="Please specify weights (GSM), dimensions, quantity, or packaging customization guidelines..."
+                          placeholder="Please specify weights (GSM), quantity, or packaging customization guidelines..."
                           value={inquiryForm.requirement}
                           onChange={(e) =>
                             setInquiryForm({
