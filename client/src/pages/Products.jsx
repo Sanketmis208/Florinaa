@@ -307,6 +307,7 @@ const Products = () => {
                       "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=600&q=85"
                     }
                     alt={product.name}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   {product.featured && (

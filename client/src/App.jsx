@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-import About from "./pages/About";
+
+// Lazy load pages for optimized initial load time and code splitting
+const Home = lazy(() => import("./pages/Home"));
+const Products = lazy(() => import("./pages/Products"));
+const About = lazy(() => import("./pages/About"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Download, X, CheckCircle } from "lucide-react";
@@ -92,19 +94,30 @@ const App = () => {
       <main
         className={`flex-grow ${isAdminRoute ? "h-full overflow-hidden" : ""}`}
       >
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Home onDownloadCatalog={() => setIsDownloadModalOpen(true)} />
-            }
-          />
-          <Route path="/products" element={<Products />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense
+          fallback={
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+              <div className="w-10 h-10 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
+              <p className="text-neutral-400 text-xs font-semibold uppercase tracking-widest animate-pulse">
+                Loading Florinaa...
+              </p>
+            </div>
+          }
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home onDownloadCatalog={() => setIsDownloadModalOpen(true)} />
+              }
+            />
+            <Route path="/products" element={<Products />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Footer */}
