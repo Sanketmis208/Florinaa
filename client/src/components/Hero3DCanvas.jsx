@@ -225,16 +225,50 @@ const Scene = ({ mouseX, mouseY, R3F, Drei }) => {
 };
 
 // 2D Premium Fallback (Low-power / Mobile / Non-WebGL)
-const FallbackBackground = () => (
-  <div className="absolute inset-0 bg-gradient-to-tr from-primary via-[#161412] to-[#251e18] overflow-hidden">
-    {/* Floating CSS Particle 1 */}
-    <div className="absolute w-[25vw] h-[25vw] rounded-full bg-accent/5 blur-[80px] top-[10%] left-[20%] animate-pulse duration-[8s]" />
-    {/* Floating CSS Particle 2 */}
-    <div className="absolute w-[30vw] h-[30vw] rounded-full bg-accent-light/5 blur-[100px] bottom-[15%] right-[15%] animate-pulse duration-[12s] delay-1000" />
-    {/* Floating CSS Particle 3 */}
-    <div className="absolute w-[15vw] h-[15vw] rounded-full bg-[#B69466]/5 blur-[60px] top-[50%] left-[65%] animate-pulse duration-[10s] delay-500" />
-  </div>
-);
+const FallbackBackground = () => {
+  const images = useMemo(() => [
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782326103/florinaa/cgwkv8vi5ibpp2wbkgw2.png",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323977/FFD2F591-76F6-478D-A3C0-3F02C1818EC5_pbsynv.png",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323645/702afbec-bc66-42f9-9c14-39959f898290_mymt9m.jpg",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323187/BA63DEF0-AD5F-4DD0-94F4-82862167A52A_xuquc3.png"
+  ], []);
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="absolute inset-0 bg-primary overflow-hidden">
+      {/* Sliding Images Container */}
+      <div
+        className="flex w-[400%] h-full transition-transform duration-1000 ease-in-out"
+        style={{ transform: `translateX(-${index * 25}%)` }}
+      >
+        {images.map((src, idx) => (
+          <div key={idx} className="w-1/4 h-full relative">
+            <img
+              src={src}
+              alt=""
+              className="w-full h-full object-cover object-center brightness-[0.45] contrast-[1.05]"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Decorative overlays */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary/80 via-primary/30 to-black/40 pointer-events-none" />
+
+      {/* Floating ambient particles for depth */}
+      <div className="absolute w-[40vw] h-[40vw] rounded-full bg-accent/5 blur-[80px] top-[10%] left-[20%] animate-pulse duration-[8s] pointer-events-none" />
+      <div className="absolute w-[50vw] h-[50vw] rounded-full bg-accent-light/5 blur-[100px] bottom-[15%] right-[15%] animate-pulse duration-[12s] delay-1000 pointer-events-none" />
+    </div>
+  );
+};
 
 // Unified Hero3D Component with Lazy loading & fallback check
 export default function Hero3DCanvas({ mouseX, mouseY }) {
