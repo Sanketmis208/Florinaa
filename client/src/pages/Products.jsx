@@ -236,72 +236,29 @@ const Products = () => {
               />
             </div>
 
-            {/* Sorter */}
-            <div className="relative w-full md:w-48 group">
-              <ArrowUpDown
+            {/* Category Dropdown (Replacing Default Sort) */}
+            <div className="relative w-full md:w-60 group">
+              <Filter
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-accent pointer-events-none group-hover:text-accent-dark transition-colors"
                 size={14}
               />
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 rounded-full border border-accent/40 hover:border-accent focus:border-accent focus:ring-1 focus:ring-accent bg-secondary/20 hover:bg-secondary/35 text-neutral-700 text-[11px] uppercase tracking-wider font-semibold focus:outline-none transition-all duration-300 cursor-pointer appearance-none"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full pl-10 pr-10 py-2.5 rounded-full border border-accent/40 hover:border-accent focus:border-accent focus:ring-1 focus:ring-accent bg-secondary/20 hover:bg-secondary/35 text-neutral-700 text-[11px] uppercase tracking-wider font-semibold focus:outline-none transition-all duration-300 cursor-pointer appearance-none text-left"
               >
-                <option value="default">Default Sort</option>
-                <option value="name-asc">A - Z Name</option>
-                <option value="name-desc">Z - A Name</option>
-                <option value="gsm-desc">Highest GSM First</option>
-                <option value="gsm-asc">Lowest GSM First</option>
+                <option value="all">All Items</option>
+                {categories?.map((cat) => (
+                  <option key={cat._id} value={cat.slug}>
+                    {cat.name}
+                  </option>
+                ))}
               </select>
               <ChevronDown
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none group-hover:text-neutral-500 transition-colors"
                 size={14}
               />
             </div>
-          </div>
-
-          <div className="w-full border-t border-neutral-100" />
-
-          {/* Category Quick Filter */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 w-full py-1">
-            <button
-              onClick={() => setSelectedCategory("all")}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-all duration-300 shrink-0 cursor-pointer ${
-                selectedCategory === "all"
-                  ? "bg-primary text-white shadow-md"
-                  : "bg-secondary text-neutral-600 hover:bg-neutral-200"
-              }`}
-            >
-              <Sparkles size={13} />
-              All Items
-            </button>
-            {categories?.map((cat) => {
-              const IconComp = {
-                "light-blankets": Layers,
-                "heavy-blankets": Snowflake,
-                "fitted-sheets": BedDouble,
-                "comforters": CloudSun,
-                "bed-sheets": Package,
-                "flano-carpets": LayoutGrid,
-                "flano-bath-mats": Bath,
-                "flano-rugs": Grip,
-                "duvet-covers-dohar": Layers,
-              }[cat.slug] || Filter;
-              return (
-                <button
-                  key={cat._id}
-                  onClick={() => setSelectedCategory(cat.slug)}
-                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium tracking-wide uppercase transition-all duration-300 shrink-0 cursor-pointer ${
-                    selectedCategory === cat.slug
-                      ? "bg-primary text-white shadow-md"
-                      : "bg-secondary text-neutral-600 hover:bg-neutral-200"
-                  }`}
-                >
-                  <IconComp size={13} />
-                  {cat.name}
-                </button>
-              );
-            })}
           </div>
         </div>
 
