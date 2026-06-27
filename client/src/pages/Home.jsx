@@ -23,7 +23,7 @@ import {
   Award,
   Users,
 } from "lucide-react";
-import { contentAPI, productsAPI, leadsAPI } from "../services/api";
+import { contentAPI, productsAPI, leadsAPI, categoriesAPI } from "../services/api";
 
 import { useDocumentMetadata } from "../hooks/useDocumentMetadata";
 
@@ -128,7 +128,7 @@ const Home = ({ onDownloadCatalog }) => {
     companyName: "",
     contactName: "",
     requirement: "",
-    category: "blankets",
+    category: "",
     email: "",
     phone: "",
   });
@@ -147,6 +147,20 @@ const Home = ({ onDownloadCatalog }) => {
     queryKey: ["products"],
     queryFn: productsAPI.getAll,
   });
+
+  const { data: categoriesData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: categoriesAPI.getAll,
+  });
+
+  useEffect(() => {
+    if (categoriesData && categoriesData.length > 0 && !inquiryForm.category) {
+      setInquiryForm((prev) => ({
+        ...prev,
+        category: categoriesData[0].slug,
+      }));
+    }
+  }, [categoriesData, inquiryForm.category]);
 
   // Featured products filter
   const visibleProducts =
@@ -1139,16 +1153,11 @@ const Home = ({ onDownloadCatalog }) => {
                           }
                           className="w-full px-4 py-3.5 rounded-xl border border-neutral-300 focus:border-accent bg-white text-sm focus:outline-none transition-colors"
                         >
-                          <option value="blankets">
-                            Luxury Flannel Blankets
-                          </option>
-                          <option value="dohar">Cotton Dohar & Quilts</option>
-                          <option value="fitted-sheets">
-                            Fitted Bed Sheets
-                          </option>
-                          <option value="flano-carpets">
-                            Soft-floor Carpets & Rugs
-                          </option>
+                          {categoriesData?.map((cat) => (
+                            <option key={cat._id} value={cat.slug}>
+                              {cat.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
 
