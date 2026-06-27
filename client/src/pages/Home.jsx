@@ -189,7 +189,7 @@ const Home = ({ onDownloadCatalog }) => {
         companyName: "",
         contactName: "",
         requirement: "",
-        category: "blankets",
+        category: "",
         email: "",
         phone: "",
       });
