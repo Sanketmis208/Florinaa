@@ -37,9 +37,9 @@ const Footer = () => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center">
             <img
-              src="/FLORINAA_Logo_Transparent.png"
+              src="/FLORINAA_Logo_Upscaled.png"
               alt="Florinaa Logo"
-              className="h-10 w-auto object-contain brightness-0 invert"
+              className="h-10 w-auto object-contain"
             />
           </div>
           <p className="text-secondary/70 text-sm leading-relaxed mt-2 font-light">
