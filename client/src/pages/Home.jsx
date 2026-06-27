@@ -27,7 +27,7 @@ import { contentAPI, productsAPI, leadsAPI } from "../services/api";
 
 import { useDocumentMetadata } from "../hooks/useDocumentMetadata";
 
-const Hero3DCanvas = lazy(() => import("../components/Hero3DCanvas"));
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,8 +98,23 @@ const ScrollCounter = ({
 const Home = ({ onDownloadCatalog }) => {
   useDocumentMetadata(
     "Florinaa - Sleep in Style | Premium Flannel Bedding & Luxury Blankets",
-    "Discover Florinaa's collection of ultra-soft blankets, custom cotton dohars, fitted bed sheets, and premium quilts. Experience crafted textile excellence from Panipat."
+    "Discover Florinaa's collection of ultra-soft blankets, custom cotton dohars, fitted bed sheets, and premium quilts. Experience crafted textile excellence from Panipat.",
   );
+
+  const heroImages = [
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782326103/florinaa/cgwkv8vi5ibpp2wbkgw2.png",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323977/FFD2F591-76F6-478D-A3C0-3F02C1818EC5_pbsynv.png",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323645/702afbec-bc66-42f9-9c14-39959f898290_mymt9m.jpg",
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323187/BA63DEF0-AD5F-4DD0-94F4-82862167A52A_xuquc3.png"
+  ];
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
 
   const horizontalSectionRef = useRef(null);
   const horizontalTriggerRef = useRef(null);
@@ -153,7 +168,7 @@ const Home = ({ onDownloadCatalog }) => {
       const requirement = variables.requirement || "";
 
       const whatsappText = `Hello, I've submitted a wholesale inquiry:\n\n*Customer Name:* ${name}\n*Company:* ${company}\n*Email:* ${email}\n*Phone:* ${phone}\n\n*Inquiry Details:*\n${requirement}`;
-      const whatsappUrl = `https://wa.me/919879619815?text=${encodeURIComponent(whatsappText)}`;
+      const whatsappUrl = `https://wa.me/919896915012?text=${encodeURIComponent(whatsappText)}`;
       window.open(whatsappUrl, "_blank");
 
       setInquiryForm({
@@ -351,15 +366,22 @@ const Home = ({ onDownloadCatalog }) => {
         onMouseMove={handleHeroMouseMove}
         className="relative h-screen w-full flex items-center justify-center bg-primary overflow-hidden"
       >
-        {/* Lazy Loaded 3D WebGL Canvas Layer (with mobile/reduced motion 2D fallback) */}
-        <div className="hero-canvas-container absolute inset-0 z-0">
-          <Suspense
-            fallback={
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary via-[#161412] to-[#251e18]" />
-            }
+        {/* Animated Sliding Hero Background (Replaces 3D WebGL Canvas Layer) */}
+        <div className="absolute inset-0 z-0 bg-primary overflow-hidden">
+          <div
+            className="flex w-[400%] h-full transition-transform duration-1000 ease-in-out"
+            style={{ transform: `translateX(-${heroIndex * 25}%)` }}
           >
-            <Hero3DCanvas mouseX={mouseX} mouseY={mouseY} />
-          </Suspense>
+            {heroImages.map((src, idx) => (
+              <div key={idx} className="w-1/4 h-full relative">
+                <img
+                  src={src}
+                  alt=""
+                  className="w-full h-full object-cover object-center brightness-[0.4] contrast-[1.05]"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Ambient Dark Overlay for text legibility */}
@@ -769,17 +791,13 @@ const Home = ({ onDownloadCatalog }) => {
                 <div className="w-screen flex items-center justify-center text-neutral-500 font-light italic">
                   Loading products showcase...
                 </div>
-              )
-            }
+              )}
             </div>
           </div>
         </div>
       )}
 
-
-
-
-      { /* 5. FACTORY PROCESS TIMELINE */ } 
+      {/* 5. FACTORY PROCESS TIMELINE */}
       <section id="process" className="py-24 bg-secondary">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           {/* Section Header */}
