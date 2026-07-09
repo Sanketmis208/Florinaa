@@ -8,7 +8,7 @@ const contentSchema = new mongoose.Schema(
     },
     heroSubtitle: {
       type: String,
-      default: "Premium bedding and soft-floor textiles crafted for homes that value quiet luxury.",
+      default: "Premium bedding and soft-floor textiles crafted by Florinaa.",
     },
     heroImage: {
       type: String,
@@ -30,7 +30,7 @@ const contentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 module.exports = mongoose.model("Content", contentSchema);

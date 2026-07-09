@@ -23,11 +23,14 @@ import {
   Award,
   Users,
 } from "lucide-react";
-import { contentAPI, productsAPI, leadsAPI, categoriesAPI } from "../services/api";
+import {
+  contentAPI,
+  productsAPI,
+  leadsAPI,
+  categoriesAPI,
+} from "../services/api";
 
 import { useDocumentMetadata } from "../hooks/useDocumentMetadata";
-
-
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -105,7 +108,7 @@ const Home = ({ onDownloadCatalog }) => {
     "https://res.cloudinary.com/de424yeri/image/upload/v1782326103/florinaa/cgwkv8vi5ibpp2wbkgw2.png",
     "https://res.cloudinary.com/de424yeri/image/upload/v1782323977/FFD2F591-76F6-478D-A3C0-3F02C1818EC5_pbsynv.png",
     "https://res.cloudinary.com/de424yeri/image/upload/v1782323645/702afbec-bc66-42f9-9c14-39959f898290_mymt9m.jpg",
-    "https://res.cloudinary.com/de424yeri/image/upload/v1782323187/BA63DEF0-AD5F-4DD0-94F4-82862167A52A_xuquc3.png"
+    "https://res.cloudinary.com/de424yeri/image/upload/v1782323187/BA63DEF0-AD5F-4DD0-94F4-82862167A52A_xuquc3.png",
   ];
   const [heroIndex, setHeroIndex] = useState(0);
 
@@ -416,7 +419,7 @@ const Home = ({ onDownloadCatalog }) => {
 
           <p className="hero-sub font-sans text-lg md:text-2xl text-secondary/80 font-light tracking-wide max-w-2xl mx-auto mb-10 leading-relaxed">
             {contentData?.heroSubtitle ||
-              "Crafted Premium Blankets & Textile Excellence Since 2012."}
+              "Crafted Premium Blankets & Textile Excellence"}
           </p>
 
           <div className="hero-ctas flex flex-col sm:flex-row items-center justify-center gap-5">

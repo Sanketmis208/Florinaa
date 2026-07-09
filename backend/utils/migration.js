@@ -135,7 +135,7 @@ const runMigration = async () => {
       heroTitle: contentData.heroTitle || "Where Comfort Meets Elegance",
       heroSubtitle:
         contentData.heroSubtitle ||
-        "Premium flannel bedding, blankets, sheets, and soft-floor textiles crafted by Florinaa for homes that value quiet luxury.",
+        "Premium flannel bedding, blankets, sheets, and soft-floor textiles crafted by Florinaa.",
       heroImage:
         contentData.heroImage ||
         "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1800&q=90",
