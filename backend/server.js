@@ -26,12 +26,31 @@ const PORT = process.env.PORT || 3000;
 // Trust first proxy (required for Render, Vercel, etc. — fixes rate-limiter IP detection)
 app.set("trust proxy", 1);
 
+// Public, read-only catalog endpoints (relative to the /api mount)
+const PUBLIC_READ_PREFIXES = ["/products", "/categories", "/content"];
+const isPublicRead = (req) =>
+  (req.method === "GET" || req.method === "HEAD") &&
+  PUBLIC_READ_PREFIXES.some((prefix) => req.path === prefix || req.path.startsWith(`${prefix}/`));
+
 // Rate Limiter Configurations
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 300, // Limit each IP to 300 requests per 15 minutes
   standardHeaders: true,
   legacyHeaders: false,
+  skip: isPublicRead, // Catalog reads use the more generous publicReadLimiter below
+  message: {
+    error: "Too many requests from this IP, please try again after 15 minutes."
+  }
+});
+
+// Catalog browsing must not lock out visitors who share an IP (mobile carrier CGNAT, offices, dev reloads)
+const publicReadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 3000, // Limit each IP to 3000 catalog reads per 15 minutes
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => !isPublicRead(req),
   message: {
     error: "Too many requests from this IP, please try again after 15 minutes."
   }
@@ -92,7 +111,7 @@ app.use(
 );
 
 // Apply rate limiting globally to all API routes
-app.use("/api", apiLimiter);
+app.use("/api", publicReadLimiter, apiLimiter);
 
 // CORS setup
 const allowedOrigins = [
