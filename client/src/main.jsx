@@ -10,7 +10,14 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: 1,
+      // Keep retrying server/network errors for ~45s: a sleeping Render instance answers 429 while it wakes up.
+      // Client errors like 401/404 are not retried.
+      retry: (failureCount, error) => {
+        const status = error?.response?.status;
+        if (status && status < 500 && status !== 408 && status !== 429) return false;
+        return failureCount < 6;
+      },
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 15000),
       staleTime: 5 * 60 * 1000, // 5 minutes
     },
   },

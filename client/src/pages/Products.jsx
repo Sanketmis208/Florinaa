@@ -124,6 +124,8 @@ const Products = () => {
     data: products,
     isLoading: productsLoading,
     error: productsError,
+    isFetching: productsFetching,
+    refetch: refetchProducts,
   } = useQuery({
     queryKey: ["products"],
     queryFn: productsAPI.getAll,
@@ -277,9 +279,19 @@ const Products = () => {
             </span>
           </div>
         ) : productsError ? (
-          <div className="flex items-center gap-3 justify-center py-20 text-red-500">
-            <AlertCircle size={24} />
-            <span>Failed to load product catalog. Please try again.</span>
+          <div className="flex flex-col items-center gap-4 justify-center py-20 text-red-500">
+            <div className="flex items-center gap-3">
+              <AlertCircle size={24} />
+              <span>Failed to load product catalog. Please try again.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => refetchProducts()}
+              disabled={productsFetching}
+              className="px-6 py-2.5 rounded-full bg-neutral-900 text-white text-sm font-medium tracking-wide hover:bg-neutral-800 disabled:opacity-60 transition-colors"
+            >
+              {productsFetching ? "Retrying..." : "Try again"}
+            </button>
           </div>
         ) : sortedProducts.length === 0 ? (
           <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-neutral-300">

@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
+const mongoose = require("mongoose");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const connectDB = require("./config/db");
@@ -153,6 +154,20 @@ app.use("/api/leads", (req, res, next) => {
     return submitLimiter(req, res, next);
   }
   next();
+});
+
+// Let Vercel's CDN cache catalog reads, and keep serving the cached copy while this API is asleep or erroring.
+// Admin sessions and ?fresh requests always read straight from the database.
+app.use("/api", (req, res, next) => {
+  if (isPublicRead(req) && !req.cookies.florinaa_admin && req.query.fresh === undefined) {
+    res.set("Vercel-CDN-Cache-Control", "max-age=60, stale-while-revalidate=86400, stale-if-error=604800");
+  }
+  next();
+});
+
+// Lightweight health check (no DB query) for uptime monitors / keep-warm pings
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, db: mongoose.connection.readyState === 1 });
 });
 
 // Mount API Routes

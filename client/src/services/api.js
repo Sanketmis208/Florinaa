@@ -26,10 +26,12 @@ export const authAPI = {
   },
 };
 
+// Public reads are cached by Vercel's CDN; pass { fresh: true } (admin) to bypass the cache
+
 // Products endpoints
 export const productsAPI = {
-  getAll: async () => {
-    const { data } = await API.get("/products");
+  getAll: async ({ fresh } = {}) => {
+    const { data } = await API.get("/products", { params: fresh ? { fresh: 1 } : undefined });
     return data;
   },
   getBySlug: async (slug) => {
@@ -52,8 +54,8 @@ export const productsAPI = {
 
 // Categories endpoints
 export const categoriesAPI = {
-  getAll: async () => {
-    const { data } = await API.get("/categories");
+  getAll: async ({ fresh } = {}) => {
+    const { data } = await API.get("/categories", { params: fresh ? { fresh: 1 } : undefined });
     return data;
   },
   create: async (categoryData) => {
@@ -88,8 +90,8 @@ export const leadsAPI = {
 
 // Content settings endpoints
 export const contentAPI = {
-  get: async () => {
-    const { data } = await API.get("/content");
+  get: async ({ fresh } = {}) => {
+    const { data } = await API.get("/content", { params: fresh ? { fresh: 1 } : undefined });
     return data;
   },
   update: async (contentData) => {

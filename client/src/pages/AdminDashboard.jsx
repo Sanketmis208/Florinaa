@@ -71,13 +71,13 @@ const AdminDashboard = () => {
 
   const { data: products, isLoading: productsLoading } = useQuery({
     queryKey: ["products-admin"],
-    queryFn: productsAPI.getAll,
+    queryFn: () => productsAPI.getAll({ fresh: true }),
     enabled: !!user,
   });
 
   const { data: categories, isLoading: categoriesLoading } = useQuery({
     queryKey: ["categories-admin"],
-    queryFn: categoriesAPI.getAll,
+    queryFn: () => categoriesAPI.getAll({ fresh: true }),
     enabled: !!user,
   });
 
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
   const { data: content, isLoading: contentLoading } = useQuery({
     queryKey: ["content-admin"],
-    queryFn: contentAPI.get,
+    queryFn: () => contentAPI.get({ fresh: true }),
     enabled: !!user,
   });
 
