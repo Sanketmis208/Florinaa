@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const connectDB = require("./config/db");
+const startKeepAwake = require("./utils/keepAwake");
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
@@ -205,4 +206,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Express Server running on port ${PORT}`);
+  startKeepAwake();
 });
