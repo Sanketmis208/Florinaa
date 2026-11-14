@@ -88,27 +88,6 @@ const About = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-              >
-                <p className="text-base text-neutral-600 leading-relaxed">
-                  Florinaa is the proud extension of{" "}
-                  <span className="font-semibold text-primary">
-                    Ess Pee Exports
-                  </span>
-                  , a Panipat-based textile company with over{" "}
-                  <span className="font-semibold text-accent">
-                    46 years of expertise
-                  </span>{" "}
-                  in global trade and manufacturing. This rich heritage is the
-                  foundation of Florinaa, ensuring that every product reflects
-                  decades of craftsmanship, reliability, and innovation.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
                 <p className="text-base text-neutral-600 leading-relaxed">
