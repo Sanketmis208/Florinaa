@@ -4,7 +4,7 @@ const User = require("../models/User");
 // so changing those env vars (e.g. on Render) is all it takes to change the login.
 const ensureAdmin = async () => {
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const password = process.env.ADMIN_PASSWORD;
+  const password = process.env.ADMIN_PASSWORD?.trim();
 
   if (!email || !password) {
     console.warn("ADMIN_EMAIL / ADMIN_PASSWORD not set; skipping admin user sync.");
@@ -24,6 +24,8 @@ const ensureAdmin = async () => {
       user.password = password; // re-hashed by the User pre-save hook
       await user.save();
       console.log(`Admin password updated for ${email}.`);
+    } else {
+      console.log(`Admin user ${email} already matches ADMIN_PASSWORD.`);
     }
   } catch (error) {
     console.error(`Admin user sync failed: ${error.message}`);

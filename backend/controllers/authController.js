@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
@@ -17,13 +18,44 @@ const generateToken = (res, id) => {
 // @desc    Auth user & get token
 // @route   POST /api/auth/login
 // @access  Public
+const safeEqual = (a, b) => {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB);
+};
+
+// ADMIN_EMAIL / ADMIN_PASSWORD (set on Render) always work, whatever is stored in MongoDB.
+// On a match, the stored admin user is created or brought in line so the session has a user id.
+const loginWithEnvCredentials = async (email, password) => {
+  const envEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const envPassword = process.env.ADMIN_PASSWORD?.trim();
+  if (!envEmail || !envPassword || email !== envEmail || !safeEqual(password, envPassword)) {
+    return null;
+  }
+
+  let user = await User.findOne({ email });
+  if (!user) {
+    user = await User.create({ email, password, role: "admin" });
+  } else if (!(await user.matchPassword(password))) {
+    user.password = password; // re-hashed by the User pre-save hook
+    await user.save();
+  }
+  return user;
+};
+
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const email = String(req.body.email ?? "").trim().toLowerCase();
+  const password = String(req.body.password ?? "").trim();
 
   try {
-    const user = await User.findOne({ email });
+    let user = await loginWithEnvCredentials(email, password);
 
-    if (user && (await user.matchPassword(password))) {
+    if (!user) {
+      const stored = await User.findOne({ email });
+      if (stored && (await stored.matchPassword(password))) user = stored;
+    }
+
+    if (user) {
       generateToken(res, user._id);
       res.json({
         _id: user._id,
